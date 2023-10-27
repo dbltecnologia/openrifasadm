@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "744015169852",
+    "firebase_url": "https://vaapy-app-default-rtdb.firebaseio.com",
+    "project_id": "vaapy-app",
+    "storage_bucket": "vaapy-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744015169852:android:09592b290d08c82bbdf639",
+        "android_client_info": {
+          "package_name": "com.vaapy.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "744015169852-7bhv8duurccrvmb9rl56n8imud7gjf4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4AC5V_Dd-Ex2I4vKhBPCB-JP4mqsmSTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744015169852-7bhv8duurccrvmb9rl56n8imud7gjf4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:744015169852:android:906ddc13c4d41dc1bdf639",
+        "android_client_info": {
+          "package_name": "com.vaapy.pro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "744015169852-7bhv8duurccrvmb9rl56n8imud7gjf4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4AC5V_Dd-Ex2I4vKhBPCB-JP4mqsmSTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "744015169852-7bhv8duurccrvmb9rl56n8imud7gjf4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

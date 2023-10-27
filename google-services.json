@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "109979001350",
+    "firebase_url": "https://inova-f30e4-default-rtdb.firebaseio.com",
+    "project_id": "inova-f30e4",
+    "storage_bucket": "inova-f30e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109979001350:android:7f4b88dd6480b006bd9987",
+        "android_client_info": {
+          "package_name": "com.inova.populacao"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7kwLidtD8ZJwWXoTTLr84nvt3nuFScWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109979001350:android:90529a773eaea408bd9987",
+        "android_client_info": {
+          "package_name": "com.inova.smmp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7kwLidtD8ZJwWXoTTLr84nvt3nuFScWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

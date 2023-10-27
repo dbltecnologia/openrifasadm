@@ -1,0 +1,83 @@
+<ion-header>
+        <ion-navbar>
+            <ion-title>{{dataInfo.appName}}</ion-title>
+        </ion-navbar>
+    </ion-header>
+    
+    <ion-content padding-left padding-right padding-top text-center>
+        
+        
+        <img src="assets/imgs/logo.png" class="logo ani-left-to-right">
+        
+        <div padding>
+
+            <ion-list class="form" no-lines>
+
+                <ion-item class="bg-light text-theme">   
+                    
+                    
+                    <ion-label stacked>{{dataText.yourEmail}}</ion-label>  
+                    <ion-input type="text" value="" [(ngModel)]="username" placeholder="{{dataText.yourEmail}}"></ion-input>
+                </ion-item>
+
+                <ion-item class="bg-light text-theme">
+                    <ion-label stacked>{{dataText.yourPassword}}</ion-label>  
+                    <ion-input class="password" type="password" value="" [(ngModel)]="password" placeholder="{{dataText.yourPassword}}"></ion-input>
+                </ion-item>
+
+
+                <ion-item no-lines style="margin-top: 10px;"  *ngIf="languageSelected === 0"> 
+                    
+
+                    <ion-label stacked>Qual o seu estado?</ion-label>  
+                    <ion-select [(ngModel)]="dataInfo.defaultState">
+                      
+                      <ion-option value="DF">Distrito Federal</ion-option>
+                      <ion-option value="AC">Acre</ion-option>
+                      <ion-option value="AL">Alagoas</ion-option>
+                      <ion-option value="AP">Amapá</ion-option>    
+                      <ion-option value="AM">Amazonas</ion-option>
+                      <ion-option value="BA">Bahia</ion-option>
+                      <ion-option value="CE">Ceará</ion-option>                      
+                      <ion-option value="ES">Espírito Santo</ion-option>
+                      <ion-option value="GO">Goiás</ion-option>    
+                      <ion-option value="MA">Maranhão</ion-option>
+                      <ion-option value="MT">Mato Grosso</ion-option>
+                      <ion-option value="MS">Mato Grosso do Sul</ion-option>    
+                      <ion-option value="MG">Minas Gerais</ion-option>
+                      <ion-option value="PA">Pará</ion-option>
+                      <ion-option value="PB">Paraíba</ion-option>    
+                      <ion-option value="PR">Paraná</ion-option>
+                      <ion-option value="PE">Pernambuco</ion-option>
+                      <ion-option value="PI">Piauí</ion-option>    
+                      <ion-option value="RJ">Rio de Janeiro</ion-option>
+                      <ion-option value="RN">Rio Grande do Norte</ion-option>
+                      <ion-option value="RS">Rio Grande do Sul </ion-option>    
+                      <ion-option value="RO">Rondônia</ion-option>
+                      <ion-option value="RR">Roraima</ion-option>
+                      <ion-option value="SC">Santa Catarina</ion-option>    
+                      <ion-option value="SP">São Paulo</ion-option>
+                      <ion-option value="SE">Sergipe</ion-option>
+                      <ion-option value="TO">Tocantins</ion-option>
+    
+                    </ion-select>                          
+                  </ion-item>
+    
+              
+            </ion-list>                        
+            
+            <button ion-button block full text-uppercase class="bg-theme text-white btn round shadow-blue" (click)="loginUser()">{{dataText.login}}</button>
+            
+        </div>
+          
+    </ion-content>
+
+
+<ion-footer style="background-color: transparent;">
+    
+    <ion-row text-center>
+        <ion-col (click)="languageChanged()"><small class="text-theme"><strong class="text-theme">{{dataText.changeLanguage}}</strong></small></ion-col>
+    </ion-row> 
+    
+</ion-footer>
+    
