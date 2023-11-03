@@ -1,54 +1,34 @@
-# Documento Técnico: Projeto Maria da Penha - App Colaborativo com Botão de Pânico
+## Painel Administrativo: Projeto Maria da Penha - App Colaborativo com Botão de Pânico
 
-## Visão Geral do Projeto
+### Descrição do Painel Administrativo
+O painel administrativo é a interface crítica utilizada pela equipe de monitoramento e resposta. Funciona como o núcleo operacional do sistema, onde as notificações de emergência são recebidas e gerenciadas. Quando o botão de pânico é ativado por uma usuária, a equipe de vigilância recebe um alerta imediato, exibindo informações vitais para uma resposta rápida.
 
-### Descrição
-O "Projeto Maria da Penha: App Colaborativo com Botão de Pânico" é uma solução tecnológica inovadora voltada para o público feminino, visando oferecer um mecanismo de segurança e proteção. Este aplicativo permite que as usuárias se cadastrem e utilizem um botão de pânico, que quando ativado, transmite a localização em tempo real para uma central de monitoramento. Esta central está equipada para reagir prontamente e contactar as autoridades competentes em caso de emergências.
+### Funcionalidades do Painel Administrativo
 
-### Objetivos
-- Fornecer uma plataforma acessível para aumentar a segurança das mulheres.
-- Permitir um meio rápido e eficaz de acionar ajuda em situações de risco.
-- Integrar tecnologia e segurança pública para atender emergências de forma ágil.
+- **Visualização em Tempo Real**: Exibe notificações ativas, incluindo localização, telefone e endereço da usuária em perigo.
+- **Gestão de Alertas**: Permite à equipe administrativa acompanhar e gerenciar as notificações de pânico recebidas.
+- **Despacho de Equipes de Resposta**: Integração com serviços de emergência para enviar assistência à localização indicada o mais rápido possível.
 
-## Funcionalidades do Aplicativo
+### Telas do Painel Administrativo
 
-1. **Cadastro de Usuárias**: Facilita a criação de perfil pessoal para acesso às funcionalidades do app.
-2. **Botão de Pânico**: Pode ser ativado ou desativado pela usuária, funcionando como um dispositivo de alerta.
-3. **Monitoramento em Tempo Real**: Uma vez ativado o botão, a central monitora a localização da usuária para ação imediata, se necessário.
-4. **Acionamento de Autoridades**: A central possui protocolos para acionar os serviços de emergência rapidamente em casos críticos.
+#### Tela de Login
+Segurança é uma prioridade, e o acesso ao painel administrativo é protegido por autenticação rigorosa para garantir que apenas pessoal autorizado possa operar o sistema.
 
-## Sistemas Associados
+#### Tela Inicial
+Apresenta uma visão geral do sistema e inclui um botão para gestão de usuárias. A tela principal também serve como o painel de controle, onde alertas ativos são destacados e podem ser gerenciados eficientemente.
 
-- **Sistema de Gestão do App Colaborativo**: Responsável pela manutenção dos dados e interações das usuárias.
-- **Sistema de Monitoramento Maria da Penha**: Centraliza o monitoramento das usuárias e coordena as respostas a incidentes.
+#### Tela de Gerenciamento de Usuárias
+Proporciona à equipe administrativa a capacidade de gerenciar perfis de usuárias, podendo acessar dados necessários para assistência e suporte.
 
-## Links para Homologação
+#### Tela Central de Monitoramento
+É o coração do painel, onde as alertas de pânico são exibidas. A tela é projetada para facilitar a identificação imediata e o acompanhamento de casos de emergência, mostrando informações cruciais para a rápida mobilização das equipes de resposta.
 
-- **Usuária**: [https://mariapenha.web.app/](https://mariapenha.web.app/)
-- **Administrador**: [https://mariapenhaadmin.web.app/](https://mariapenhaadmin.web.app/)
+### Protocolos de Resposta a Emergências
 
-## Descrição das Telas do Aplicativo da Usuária
+- **Identificação de Alertas**: A equipe identifica alertas emitidos pelo botão de pânico.
+- **Verificação e Validação**: A equipe rapidamente verifica a autenticidade do alerta e valida a informação.
+- **Comunicação com Autoridades**: A central se comunica diretamente com as autoridades locais, compartilhando informações precisas para uma resposta efetiva.
+- **Acompanhamento do Caso**: Após o despacho das autoridades, a equipe monitora a situação até sua conclusão, assegurando que a ajuda necessária seja prestada.
 
-### Tela de Login
-Permite à usuária autenticar-se utilizando e-mail e senha. Contém opções para recuperação de senha e acesso aos Termos de Uso e Política de Privacidade, além de um botão para novos cadastros.
-
-### Tela de Política de Privacidade
-Explica como os dados dos usuários são coletados, utilizados e protegidos. Assegura a transparência e conformidade com as leis de proteção de dados.
-
-### Tela de Termos de Uso
-Descreve as regras e condutas esperadas dos usuários ao utilizar o aplicativo, incluindo limitações de responsabilidade e direitos autorais.
-
-### Tela de Cadastro
-Formulário para a criação de um novo perfil de usuária, solicitando nome, e-mail e criação de uma senha segura.
-
-### Tela Inicial
-Apresenta o botão de pânico, que pode ser ativado (vermelho) ou desativado (verde). A cor vermelha indica um estado de alerta, enquanto a cor verde indica que está desativado.
-
-### Tela de Histórico
-Permite que as usuárias busquem por eventos passados, filtrando por data, para revisão de alertas emitidos e ações tomadas.
-
-### Menu Lateral
-Fornece acesso rápido às principais áreas do aplicativo e exibe informações do perfil do usuário, como foto, nome e e-mail, além de links para as telas de início e cadastro.
-
-## Considerações Finais
-O "Projeto Maria da Penha: App Colaborativo com Botão de Pânico" é uma ferramenta de empoderamento e segurança. Oferece às mulheres uma maneira discreta e eficiente de buscar ajuda em situações de risco, representando um avanço significativo na intersecção entre tecnologia e segurança pública.
+### Considerações Finais do Painel Administrativo
+O painel administrativo é fundamental para o funcionamento eficaz do "Projeto Maria da Penha: App Colaborativo com Botão de Pânico". Ele permite uma gestão eficiente e uma resposta rápida aos alertas de pânico, facilitando a coordenação entre o app e as autoridades locais. Este nível de integração é crucial para garantir a segurança e o bem-estar das usuárias em momentos críticos.
