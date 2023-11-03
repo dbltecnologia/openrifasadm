@@ -8,9 +8,17 @@ import { HttpdProvider } from '../../providers/httpd/httpd';
 import { Observable } from 'rxjs/Observable';
 import { DataTextProvider } from '../../providers/data-text/data-text'
 import { AudioUtilsProvider } from '../../providers/audio-utils/audio-utils';
+import { GoogleApiProvider } from '../../providers/google-api/google-api';
+
 import * as moment from 'moment';
 
 declare var google;
+
+// Define an interface for cache entries
+interface AddressCacheEntry {
+  address: string;
+  timestamp: moment.Moment;
+}
 
 @IonicPage()
 @Component({
@@ -20,6 +28,7 @@ declare var google;
 export class WorkWatchPage implements OnInit {
 
   @ViewChild('maprun') mapElement: ElementRef;
+  private addressCache: Map<string, AddressCacheEntry> = new Map();
 
   works: Observable<any>;  
   map: any;  
@@ -54,6 +63,7 @@ export class WorkWatchPage implements OnInit {
     public alertCtrl: AlertController,
     public db: DatabaseProvider,
     public httpd: HttpdProvider,
+    public routing: GoogleApiProvider,
     public dataText: DataTextProvider,  
     public audioUtils: AudioUtilsProvider,
     public navParams: NavParams) {
@@ -172,7 +182,6 @@ export class WorkWatchPage implements OnInit {
       info.key = element.payload.key;
       info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss");
 
-
       console.log('Status da usuária ', info.name, info.statusJob)
 
       if (info.statusJob) {
@@ -185,6 +194,28 @@ export class WorkWatchPage implements OnInit {
 
         if(this.isInitializing)
           this.audioUtils.play('tabSwitch');
+
+        const cacheKey = `${info.latitude}-${info.longitude}`;
+        const cacheEntry = this.addressCache.get(cacheKey);
+        const now = moment();
+        
+        if (cacheEntry && now.diff(cacheEntry.timestamp, 'minutes') < 60) { 
+          console.log('Using cached address:', cacheEntry.address);          
+        } else {          
+
+          this.routing.geocodeLatLng(info.latitude, info.longitude)
+          .then((data: any) => {
+            
+            console.log('Endereço', data);            
+
+            const formatted_address = data.result.formatted_address;
+            this.addressCache.set(cacheKey, { address: formatted_address, timestamp: now });    
+
+            console.log('Endereço', formatted_address);
+
+            info.formatted_address = formatted_address;
+          });
+        }
       }
     })
 

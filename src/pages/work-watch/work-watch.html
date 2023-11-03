@@ -20,11 +20,7 @@
         </button>       
         <button ion-button style="color: white" (click)="centerMap()">      
           {{dataText.center}}
-        </button>      
-    
-        <button ion-button color="secondary">      
-          {{dataText.running}} {{totalWorks}}
-        </button>               
+        </button>         
     
         <button ion-button style="color: white">                      
           {{dataText.clients}} online {{totalOnline}}
@@ -32,15 +28,12 @@
       </ion-buttons>
 
       <ion-list no-lines>              
-        <ion-list-header color="tema">Pesquisar online</ion-list-header>        
         <ion-searchbar
             [(ngModel)]="searchTerm"
             (search)="setFilteredItems()"
             placeholder= "Procurar...">
-         </ion-searchbar>      
-                  
+         </ion-searchbar>                        
       </ion-list>
-
 
       <ion-list *ngIf="requestType === 'Todos'">
                 
@@ -49,7 +42,9 @@
           <p><b>Usuária:</b> {{work.name}}</p>  
           <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>          
           <p *ngIf="work.latitude"> <b>Latitude:</b> {{work.latitude}}</p>   
-          <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>   
+          <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>
+          <p *ngIf="work.formatted_address">Última localização:<b>{{work.formatted_address}}</b></p> 
+   
           <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p>   
         </ion-item>                
 
@@ -61,10 +56,14 @@
         <ion-item *ngFor="let work of allClientsOnline">                  
 
           <p><b>{{dataText.clients}}:</b> {{work.name}}</p>  
-          <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>          
+          <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>    
+
+          <p *ngIf="work.formatted_address">Última localização:<b>{{work.formatted_address}}</b></p> 
           <p *ngIf="work.latitude"> <b>Latitude:</b> {{work.latitude}}</p>   
           <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>   
-          <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p>   
+          <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p> 
+          
+            
         </ion-item>        
         
       </ion-list>

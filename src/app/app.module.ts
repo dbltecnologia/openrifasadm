@@ -8,8 +8,6 @@ import { ClientsPageModule } from '../pages/clients/clients.module';
 import { WorkPageModule } from '../pages/work/work.module';
 import { LoginPageModule } from '../pages/login/login.module';
 
-import { WorkRequestAddPageModule } from '../pages/work-request-add/work-request-add.module';
-
 import { WorkWatchPageModule } from '../pages/work-watch/work-watch.module'
 import { HistoryPageModule } from '../pages/history/history.module';
 
@@ -82,7 +80,6 @@ export function createTranslateLoader(http: HttpClient) {
   exports: [    
     ClientsPageModule,
     WorkPageModule,
-    WorkRequestAddPageModule,    
     LoginPageModule,    
     WorkWatchPageModule,    
     HistoryPageModule
