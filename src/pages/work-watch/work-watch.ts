@@ -7,6 +7,7 @@ import { DatabaseProvider } from '../../providers/database/database';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { Observable } from 'rxjs/Observable';
 import { DataTextProvider } from '../../providers/data-text/data-text'
+import { AudioUtilsProvider } from '../../providers/audio-utils/audio-utils';
 import * as moment from 'moment';
 
 declare var google;
@@ -32,16 +33,18 @@ export class WorkWatchPage implements OnInit {
   icon: string 
   requestType: string = "Todos"
 
-
   allOnline: any = [] 
   allClientsOnline: any = [] 
   allWorking: any = [] 
-  allJobsList: any = []   
   
   totalOnline: number = 0
   totalWorks: number = 0
-  
 
+  allOffline: any = []; 
+  totalOffline: number = 0;
+
+  isInitializing: Boolean = true
+    
   constructor(
     public navCtl: NavController, 
     public dataInfo: DataInfoProvider,
@@ -52,7 +55,11 @@ export class WorkWatchPage implements OnInit {
     public db: DatabaseProvider,
     public httpd: HttpdProvider,
     public dataText: DataTextProvider,  
+    public audioUtils: AudioUtilsProvider,
     public navParams: NavParams) {
+
+
+      this.audioUtils.preload('tabSwitch', 'assets/audio/ding.mp3');
   }
 
   ngOnInit() {
@@ -68,90 +75,72 @@ export class WorkWatchPage implements OnInit {
   }
 
   startInterface(){
+
+    this.isInitializing = true
     
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
-
-    this.icon = this.dataInfo.iconLocationClient
-    
+    this.icon = this.dataInfo.iconLocationGreen    
     this.initializeMap()    
     this.centerMap()
-    this.loadOnlines()
-    
+    this.loadOnlines()    
     setTimeout(() => {
-
       loading.dismiss()   
-    }, 3000);
-
+      this.isInitializing = false
+    }, 2000);
   }
-
   
+
   loadOnlines(){
-
-    this.getWorkers()
+    this.getUsers()
     .then(() => {
-
       this.addOnline()      
     })
   }
-
-  
-  
-  initializeMap() {
     
+  initializeMap() {    
     this.bounds = new google.maps.LatLngBounds();
     this.startPosition = new google.maps.LatLng(this.dataInfo.userInfo.latitude, this.dataInfo.userInfo.longitude);
-
 		const mapOptions = {
       center: this.startPosition,
       zoom: 12
-		}
-	 
+		}	 
     this.map = new google.maps.Map(document.getElementById('mapwatch'), mapOptions);     
   }
 
   zoomMap(){
     this.map.zoom = 12
   }
-
   
   clearMarkers(map){
     for (var i = 0; i < this.markers.length; i++) {
       this.markers[i].setMap(map);
     }
-
   }
 
   clearAll(){
     this.clearMarkers(null)
     this.markers = []    
   } 
-  
-  
+    
   setFilteredItems(){
-
     this.clearMarkers(null)
-    this.markers = []    
-   
+    this.markers = []       
   }
 
-  searchAndAdd(element){
-    
+  searchAndAdd(element){    
     if(element.name.includes(this.searchTerm)){
       this.loadUsersMarkers(element)
     }      
-    else if(element.workerInfo && element.workerInfo.name.includes(this.searchTerm)){
+    else if(element.workerInfo.name.includes(this.searchTerm)){
       this.loadUsersMarkers(element)
     }              
   }  
 
-
   fit(){
     this.map.fitBounds(this.bounds);
   }
-
   
-
   centerMap(){
     var center = new google.maps.LatLng(this.dataInfo.userInfo.latitude, this.dataInfo.userInfo.longitude);    
     this.map.panTo(center);
@@ -161,51 +150,51 @@ export class WorkWatchPage implements OnInit {
     this.navCtl.pop()
   }
 
-  getWorkers(){
+  getUsers(){
     
     return new Promise<void>((resolve, reject) => {
-
-      this.db.getWorkers()
-
+      this.db.getUsers()
       .subscribe(data => {
-          this.getWorkersCallback(data)
-          resolve()      
-        
+          this.getUserCallback(data)
+          resolve()              
         })
-
-    })
-    
+    })    
   }
 
-  getWorkersCallback(data){      
-    
-    this.allJobsList = []
-    this.allOnline = []     
-    this.allWorking = []
-    this.totalOnline = 0   
+  getUserCallback(data) {
+    this.allOnline = [];
+    this.allOffline = []; 
+    this.totalOnline = 0;
+    this.totalOffline = 0;
 
     data.forEach(element => {
+      let info = element.payload.val();
+      info.key = element.payload.key;
+      info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss");
 
-      let info = element.payload.val()
-      info.key = element.payload.key
 
-      info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss")  
-      
-      console.log('Info', info)
+      console.log('Status da usuária ', info.name, info.statusJob)
 
-      if(info.statusJob)
-        this.getWorkersContinue(info)                                                  
-                                 
-    });
+      if (info.statusJob) {
+        this.totalOffline++;
+        this.allOffline.push(info);
+        
+      } else {
+        this.allOnline.push(info);
+        this.totalOnline++;                
+
+        if(this.isInitializing)
+          this.audioUtils.play('tabSwitch');
+      }
+    })
 
     this.sortOnline()
   }
 
-  getWorkersContinue(info){
+  getUserContinue(info){
 
     this.totalOnline++
     this.allOnline.push(info)
-    this.allJobsList.push(info)
   }
 
   sortOnline(){
@@ -228,24 +217,23 @@ export class WorkWatchPage implements OnInit {
 
   addOnline(){        
 
-    this.uiUtils.showToast(this.dataText.showProfessionals)
+    this.uiUtils.showToast("Carregando lista...")
     this.requestType = "Todos"
     this.clearAll()   
 
     this.allOnline.forEach(info => {
 
-        if(info.datetime){
-           info.datetime = moment(info.datetime).format("DD/MM/YYYY HH:mm:ss")
-        }
+        if(info.datetime)
+           info.datetime = moment(info.datetime).format("DD/MM/YYYY HH:mm:ss")    
 
         this.loadOnlineMarkers(info)
-    });
-        
-  }
- 
+    });        
+  } 
 
   loadOnlineMarkers(info){    
-    
+
+    console.log('Atualizando ', info.name, info.icon)
+  
       let marker = new google.maps.Marker({        
         label: {
           color: 'black',
@@ -264,31 +252,24 @@ export class WorkWatchPage implements OnInit {
   
       });      
   
-
       this.bounds.extend(marker.position);              
       this.markers.push(marker)            
   }
-  
-  
-  
+      
 
-  loadUsersMarkers(info){        
+  loadUsersMarkers(info){     
     
     
+    console.log('loadUsersMarkers ', info.workerInfo.name, info.workerInfo.icon)
+        
     let latitude = info.workerInfo.latitude
     let longitude = info.workerInfo.longitude    
+    let iconUrl = info.statusJob ? this.dataInfo.iconLocationGreen : this.dataInfo.iconLocationRed;
+
+    console.log('iconUrl', iconUrl)
 
     if(info.workerInfo && latitude && longitude){
-                 
-      info.image = this.icon
-
-      console.log('info', info)
-
-      if(! info.statusJob){
-        info.image = "https://firebasestorage.googleapis.com/v0/b/inova-f30e4.appspot.com/o/dot_red.gif?alt=media&token=2115d0b3-241c-4ea5-a768-1b50f4785553&_gl=1*1cla932*_ga*Mzc1OTE1ODA2LjE2OTU2MDg1NTI.*_ga_CW55HF8NVT*MTY5ODk3Mzg4Mi42Ni4xLjE2OTg5NzQ1MTQuNDMuMC4w"
-
-      }
-
+                     
         let marker = new google.maps.Marker({        
           label: {
             color: 'black',
@@ -297,7 +278,7 @@ export class WorkWatchPage implements OnInit {
           },
           icon: {
             labelOrigin: new google.maps.Point(11, 50),
-            url: this.icon,
+            url: iconUrl,
 
             
             origin: new google.maps.Point(0, 0),
@@ -313,15 +294,9 @@ export class WorkWatchPage implements OnInit {
                         
       
         this.markers.push(marker)
-        this.bounds.extend(marker.position);       
-        
+        this.bounds.extend(marker.position);               
     }        
 
-  } 
-  
-
-
-  
-  
- 
+  }   
+     
 }

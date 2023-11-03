@@ -48,7 +48,7 @@ export class ClientsPage {
   reload() {
     const loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations);
     loading.present();
-    this.usersWorkers = this.db.getWorkers();
+    this.usersWorkers = this.db.getUser();
     const sub = this.usersWorkers.subscribe(data => {
       sub.unsubscribe();
       this.processUserData(data);
@@ -177,7 +177,7 @@ export class ClientsPage {
           role: 'destructive',
           icon: !this.platform.is('ios') ? 'checkmark-circle' : null,
           handler: () => {            
-            this.updateProfileStatus(key, this.dataInfo.titleProfileVerified)
+            this.updateProfileStatus(key, "Verificado")
           }
         },        
         {

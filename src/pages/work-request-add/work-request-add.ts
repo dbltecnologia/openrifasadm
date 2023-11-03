@@ -90,7 +90,7 @@ export class WorkRequestAddPage {
     this.loadValues()  
 
     this.getClients()
-    this.getWorkers()
+    this.getUser()
     this.checkToken()
     
     this.loadMapStuff()
@@ -301,14 +301,14 @@ export class WorkRequestAddPage {
 
   }
 
-  getWorkers(){
-    this.db.getWorkers()
+  getUser(){
+    this.db.getUser()
     .subscribe(data => {
-        this.getWorkersCallback(data)
+        this.getUserCallback(data)
     })
   }
 
-  getWorkersCallback(data){
+  getUserCallback(data){
 
     this.usersWorkersArray = []
 
