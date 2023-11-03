@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, Platform } from 'ionic-angular';
-import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils'
-import { DataInfoProvider } from '../../providers/data-info/data-info'
-import { DatabaseProvider } from '../../providers/database/database';
-import { AuthProvider } from '../../providers/auth/auth';
 import { Observable } from 'rxjs/Observable';
 import { FormControl } from '@angular/forms';
-import "rxjs/add/operator/debounceTime";
-import { HttpdProvider } from '../../providers/httpd/httpd';
-import { DataTextProvider } from '../../providers/data-text/data-text'
 import * as moment from 'moment';
+
+import { UiUtilsProvider } from '../../providers/ui-utils/ui-utils';
+import { DataInfoProvider } from '../../providers/data-info/data-info';
+import { DatabaseProvider } from '../../providers/database/database';
+import { AuthProvider } from '../../providers/auth/auth';
+import { HttpdProvider } from '../../providers/httpd/httpd';
+import { DataTextProvider } from '../../providers/data-text/data-text';
 
 @IonicPage()
 @Component({
@@ -17,18 +17,15 @@ import * as moment from 'moment';
   templateUrl: 'clients.html',
 })
 export class ClientsPage {
-
   usersWorkers: Observable<any>;
-  usersArray: any = []
-  client: any
+  usersArray: any[] = [];
   searchTerm: string = '';
-  searching: any = false;
   searchControl: FormControl;
-  orderType: any
+  orderType: any;
 
   constructor(
-    public navCtrl: NavController, 
-    public uiUtils: UiUtilsProvider,    
+    public navCtrl: NavController,
+    public uiUtils: UiUtilsProvider,
     public dataInfo: DataInfoProvider,
     public db: DatabaseProvider,
     public platform: Platform,
@@ -36,101 +33,63 @@ export class ClientsPage {
     public dataText: DataTextProvider,
     public httpd: HttpdProvider,
     public actionsheetCtrl: ActionSheetController,
-    public navParams: NavParams) {
+    public navParams: NavParams
+  ) {}
 
+  ionViewDidLoad() {
+    this.orderType = "1";
+    if (this.dataInfo.isHome) {
+      this.reload();
+    } else {
+      this.navCtrl.setRoot('LoginPage');
+    }
   }
 
-  ionViewDidLoad() {    
-
-    this.orderType = "1"
-
-    if(this.dataInfo.isHome)
-      this.reload()    
-    else
-      this.navCtrl.setRoot('LoginPage')          
-  }
-
-  reload(){
-    
-    let loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations)
-    loading.present()
-
-    this.usersWorkers = this.db.getClients()
-
-    let sub = this.usersWorkers.subscribe(data => {
-
-        sub.unsubscribe()
-        this.reloadCallback(data)
-        loading.dismiss()        
+  reload() {
+    const loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations);
+    loading.present();
+    this.usersWorkers = this.db.getWorkers();
+    const sub = this.usersWorkers.subscribe(data => {
+      sub.unsubscribe();
+      this.processUserData(data);
+      loading.dismiss();
     });
   }
 
-  reloadCallback(data){
-    
-    this.usersArray = []
-
+  processUserData(data) {
+    this.usersArray = [];
     data.forEach(element => {
-
-      let info = element.payload.val()
-      info.key = element.payload.key
-      info.lastDatetimeStr = moment(info.lastDatetime).format("DD/MM/YYYY hh:mm:ss")    
-
-      if(info.userType === 1 && info.status !== 'Desativado' && info.status !== 'Removido'){
-        this.addArray(info)
-      }              
-    });    
-
-    this.checkOrder()
+      const info = element.payload.val();
+      info.key = element.payload.key;
+      info.lastDatetimeStr = moment(info.lastDatetime).format("DD/MM/YYYY hh:mm:ss");
+      this.usersArray.push(info);
+    });
+    this.checkOrder();
   }
 
-  addArray(info){   
-    
-    if(this.client && this.client.name === info.name)
-      this.checkRegion(info)    
-      
-    else 
-      this.checkRegion(info)
-        
+  
+  checkOrder() {
+    switch (this.orderType) {
+      case "1":
+        this.orderByProperty('name');
+        break;
+      case "2":
+        this.orderByProperty('name', true);
+        break;
+      case "3":
+        this.orderByProperty('datetime');
+        break;
+      case "4":
+        this.orderByProperty('lastDatetime');
+        break;
+      default:
+        this.uiUtils.showToast(this.dataText.errorFilter);
+        break;
+    }
   }
 
-  checkRegion(info){
-
-
-    if(this.dataInfo.userInfo.isAdmin)
-      this.usersArray.push(info)
-    
-
-    if(this.dataInfo.userInfo.managerRegion){
-      
-      if(info.region === this.dataInfo.userInfo.managerRegion)
-        this.usersArray.push(info)
-      
-    }
-
-  }
-
-  checkOrder(){
-
-    if(this.orderType === "1"){
-        this.orderAlpha()    
-    }
-    
-    else if(this.orderType === "2"){
-      this.orderAlphaDesc()    
-    }
-
-    else if(this.orderType === "3"){
-      this.orderDatetime()    
-    }
-
-    else if(this.orderType === "4"){
-      this.orderAccess()    
-    }
-
-    else {
-      this.uiUtils.showToast(this.dataText.errorFilter)
-    }
-
+  orderByProperty(property, desc = false) {
+    this.usersArray.sort((a, b) => desc ? b[property].localeCompare(a[property]) : a[property].localeCompare(b[property]));
   }
 
   orderAlpha(){
@@ -205,53 +164,7 @@ export class ClientsPage {
     })
   }
     
-  changeRanking(key) {
-
-    let actionSheet = this.actionsheetCtrl.create({
-      title: this.dataText.selectRank,
-      cssClass: 'action-sheets-basic-page',
-      buttons: [
-        {
-          text: 'Ouro',
-          role: 'destructive',
-          icon: !this.platform.is('ios') ? 'medal' : null,
-          handler: () => {            
-            this.updateRanking(key, this.dataInfo.titleRankingGold)
-          }
-        },
-        {
-          text: 'Prata',
-          icon: !this.platform.is('ios') ? 'medal' : null,
-          handler: () => {
-            this.updateRanking(key, this.dataInfo.titleRankingSilver)
-          }
-        },
-        {
-          text: 'Bronze',
-          icon: !this.platform.is('ios') ? 'medal' : null,
-          handler: () => {
-            this.updateRanking(key, this.dataInfo.titleRankingBronze)
-          }
-        },
-        {
-          text: 'Top',
-          icon: !this.platform.is('ios') ? 'md-trophy' : null,
-          handler: () => {
-            this.updateRanking(key, this.dataInfo.titleRankingStar)
-          }
-        },
-        {
-          text: this.dataText.cancel,
-          role: 'cancel', // will always sort to be on the bottom
-          icon: !this.platform.is('ios') ? 'star' : null,
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        }
-      ]
-    });
-    actionSheet.present();
-  }
+ 
 
   changeProfileStatus(key){
 
@@ -276,7 +189,7 @@ export class ClientsPage {
         },
         {
           text: this.dataText.cancel,
-          role: 'cancel', // will always sort to be on the bottom
+          role: 'cancel',
           icon: !this.platform.is('ios') ? 'close' : null,
           handler: () => {
             console.log('Cancel clicked');
@@ -293,7 +206,6 @@ export class ClientsPage {
   }
 
   updateProfileStatus(key, status){
-    console.log(key, status)
 
     this.db.updateProfileStatusUser(key, status)
     .then(data => {
@@ -305,33 +217,17 @@ export class ClientsPage {
   options(payload_){
 
     let actionSheet = this.actionsheetCtrl.create({
-
       
       title: this.dataText.selectOption,
       cssClass: 'action-sheets-basic-page',
-      buttons: [
-        {
-          text: this.dataText.edit,
-          role: 'destructive',
-          icon: !this.platform.is('ios') ? 'checkmark-circle' : null,
-          handler: () => {            
-            this.edit(payload_)
-          }
-        },        
+      buttons: [           
         {
           text: 'Resetar senha',
           icon: !this.platform.is('ios') ? 'refresh' : null,
           handler: () => {
             this.updateProfilePassword(payload_)
           }
-        },        
-        {
-          text: this.dataText.disableUser,
-          icon: !this.platform.is('ios') ? 'md-close-circle' : null,
-          handler: () => {
-            this.disableUser(payload_)
-          }
-        },                      
+        },                             
         {
           text: this.dataText.remove,
           icon: !this.platform.is('ios') ? 'md-trash' : null,
@@ -339,30 +235,6 @@ export class ClientsPage {
             this.removeUser(payload_)
           }
         }, 
-        {
-          text: this.dataText.credits,
-          role: 'destructive',
-          icon: 'cash',
-          handler: () => {            
-            this.credit(payload_)
-          }
-        }, 
-        {
-          text: this.dataText.billed,
-          icon: !this.platform.is('ios') ? 'md-cash' : null,
-          handler: () => {
-            
-            this.prePaidUser(payload_)
-          }
-        },        
-        {
-          text: this.dataText.premiumUser,
-          icon: !this.platform.is('ios') ? 'md-medal' : null,
-          handler: () => {
-            
-            this.changePremium(payload_)
-          }
-        },      
         {
           text: this.dataText.cancel,
           role: 'cancel',
@@ -376,15 +248,6 @@ export class ClientsPage {
     actionSheet.present();
   }
 
-  credit(payload_){
-    this.navCtrl.push('CreditsManualPage', {payload: payload_})
-  }
-
-
-  edit(payload_){
-    this.navCtrl.push('ClientsAddPage', {payload: payload_})
-
-  }
 
   updateProfilePassword(payload_){
 
@@ -445,83 +308,14 @@ export class ClientsPage {
   }
 
   inativate(payload_){
-
     this.db.updateUserStatus(payload_.uid, 'Desativado')
     .then(() => {
       this.reload()
-    })      
-
+    })          
+  }
     
-
-  }
-
-
-  
-  prePaidUser(payload_){
-
-    let msg = this.dataText.billedOn      
-
-    if(payload_.prePaid)        
-        msg = this.dataText.billedOff      
-
-    let alert = this.uiUtils.showConfirm(this.dataText.warning, msg)  
-    alert.then((result) => {
-
-      if(result){
-        this.prePaidUserContinue(payload_)
-      }    
-    })       
-  }
-
-  prePaidUserContinue(payload_){               
-
-    payload_.prePaid = !payload_.prePaid
-
-    this.db.updatePrePaid(payload_.key, payload_.prePaid)
-
-    .then(() => {              
-
-      this.uiUtils.showAlertSuccess(this.dataText.savedSuccess)
-      this.reload()      
-    })    
-  }
-
-
-
-  changePremium(payload_){
-
-    let msg = this.dataText.premiumOn      
-
-    if(payload_.isPremium)        
-        msg = this.dataText.premiumOff      
-
-    let alert = this.uiUtils.showConfirm(this.dataText.warning, msg)  
-    alert.then((result) => {
-
-      if(result){
-        this.changeValuesContinue(payload_)
-      }    
-    })       
-  }
-
-  changeValuesContinue(payload_){               
-
-    payload_.isPremium = !payload_.isPremium
-
-    this.db.updateCanChangeFinalValue(payload_.key, payload_.isPremium)
-
-    .then(() => {              
-
-      this.uiUtils.showAlertSuccess(this.dataText.savedSuccess)
-      this.reload()      
-    })    
-  }
-
   clientChanged(event){
     this.reload()
 
-  }
-  
-
-
+  }  
 }

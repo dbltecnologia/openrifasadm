@@ -53,40 +53,19 @@ export class WorkPage {
 
   goPageWorksAdd(){
     this.navCtrl.push('WorkRequestAddPage')
-    //this.uiUtils.showAlertError("Em manutenção. Favor utilizar o acesso web do aplicativo cliente")    
   } 
 
   goPageHistory(){    
     this.navCtrl.push('HistoryPage')
   }  
 
-  goPageCredits(){
-    this.navCtrl.push('CreditsPage')
-  }
-
   logout(){
     this.events.publish('logout')
   }
 
-
-  goPageIfood(){
-    this.navCtrl.push('IfoodOrdersPage')
-  }
-
-  goPageOnPedido(){
-    this.navCtrl.push('OnpedidoPage')
-  }
-
-
   goPageWorkWatch(){    
     this.navCtrl.push('WorkWatchPage')
   }
-
-  goPageChat(){
-    this.navCtrl.push('RoomPage')
-  } 
-
-
 
 
 }

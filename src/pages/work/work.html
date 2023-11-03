@@ -1,78 +1,30 @@
-
-<ion-header  class="bg-theme">
-
-    <ion-navbar text-center no-border-bottom>
-      <ion-title>{{dataText.callCenter}}</ion-title>     
-                   
-      <ion-buttons end>        
-
-        <button ion-button style="color: white" (click)="logout()" class="mrg-bt-10">                  
-          <ion-icon name="md-exit"  item-start style="margin-right: 15px;"></ion-icon>        
-          {{dataText.exit}}
-        </button>
-
-      </ion-buttons>
-
-    </ion-navbar>   
-      
-  </ion-header>
+<ion-header class="bg-theme">
+  <ion-navbar text-center no-border-bottom>
+    <ion-title>{{dataText.callCenter}}</ion-title>     
+    <ion-buttons end>
+      <button ion-button style="color: white" (click)="logout()">
+        <ion-icon name="md-exit" slot="start"></ion-icon>
+        {{dataText.exit}}
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
 
 <ion-content padding>
-  
+  <ion-list>
+    <ion-item (click)="goPageWorkWatch()">
+      <ion-icon name="eye" slot="start"></ion-icon>
+      <ion-label>{{dataText.overView}}</ion-label>
+    </ion-item>
 
-  <ion-list padding no-lines>
+    <!--<ion-item (click)="goPageWorksAdd()">
+      <ion-icon name="add-circle" slot="start"></ion-icon>
+      <ion-label>Solicitar Atendimento</ion-label>
+    </ion-item>-->
 
-
-    <ion-row>
-
-
-      <ion-col>
-
-        <ion-card (click)="goPageWorkWatch()">
-          <img src="../../assets/imgs/visao.jpg"/>
-
-          <ion-card-content>              
-            <ion-card-title>
-              {{dataText.overView}}
-            </ion-card-title>
-           
-          </ion-card-content>            
-        </ion-card>
-    </ion-col>       
-
-
-      <ion-col>
-        <ion-card (click)="goPageWorksAdd()">
-          <img src="../../assets/imgs/visao.jpg"/>
-
-          <ion-card-content>              
-            <ion-card-title>
-              Solicitar Atendimento
-            </ion-card-title>
-           
-          </ion-card-content>            
-        </ion-card>
-      </ion-col> 
-   
-      <ion-col>
-
-        <ion-card (click)="goPageHistory()">
-          <img src="../../assets/imgs/visao.jpg"/>
-
-          <ion-card-content>              
-            <ion-card-title>
-              {{dataText.reports}} 
-            </ion-card-title>
-           
-          </ion-card-content>            
-        </ion-card>
-      </ion-col>
-
-
-    </ion-row>
-
-
+    <ion-item (click)="goPageHistory()">
+      <ion-icon name="list-box" slot="start"></ion-icon>
+      <ion-label>{{dataText.reports}}</ion-label>
+    </ion-item>
   </ion-list>
-
-
-  </ion-content>
+</ion-content>

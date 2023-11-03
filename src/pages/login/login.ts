@@ -204,11 +204,7 @@ export class LoginPage {
 
     })
 
-    
-    .then(() => {
-      this.changeBanks()
-    })
-    
+  
   }  
 
   loginUser(): void {        
@@ -287,7 +283,6 @@ export class LoginPage {
     })
     .then(() => {
 
-      this.changeBanks()
 
 
     })
@@ -296,28 +291,6 @@ export class LoginPage {
   }
 
 
-
-  changeBanks(){
-
-    this.storage.get('language')
-    .then((data) => {      
-
-      if(data){
-
-        this.languageSelected = <number>data
-        this.languageSelected === 0 ? this.dataInfo.changeBanksBr() : this.dataInfo.changeBanksScotland()
-
-
-      }
-
-      else {
-
-        this.languageSelected = 0
-        this.dataInfo.changeBanksBr()
-      }
-
-  })
- }
 
  
 

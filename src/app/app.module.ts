@@ -4,32 +4,15 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ClientsPageModule } from '../pages/clients/clients.module';
-import { CreditsPageModule } from '../pages/credits/credits.module';
-import { CreditsManualPageModule } from '../pages/credits-manual/credits-manual.module';
-import { ProfessionalsPageModule } from '../pages/professionals/professionals.module';
-import { ProfessionalsAddPageModule } from '../pages/professionals-add/professionals-add.module';
 
 import { WorkPageModule } from '../pages/work/work.module';
 import { LoginPageModule } from '../pages/login/login.module';
-import { CarBrandPageModule } from '../pages/car-brand/car-brand.module';
-import { CarBrandAddPageModule } from '../pages/car-brand-add/car-brand-add.module';
+
 import { WorkRequestAddPageModule } from '../pages/work-request-add/work-request-add.module';
 
-import { WorkRunHistoryPageModule } from '../pages/work-run-history/work-run-history.module'
 import { WorkWatchPageModule } from '../pages/work-watch/work-watch.module'
-import { WorkRatePageModule } from '../pages/work-rate/work-rate.module'
-import { SearchDeliveryPageModule } from '../pages/search-delivery/search-delivery.module';
 import { HistoryPageModule } from '../pages/history/history.module';
-import { ClientsAddPageModule } from '../pages/clients-add/clients-add.module';
-import { ServicessPageModule } from '../pages/servicess/servicess.module';
-import { ServicessAddPageModule } from '../pages/servicess-add/servicess-add.module';
-import { TablesPricePageModule } from '../pages/tables-price/tables-price.module';
-import { TablesPriceAddPageModule } from '../pages/tables-price-add/tables-price-add.module';
-import { AddRoomPageModule } from '../pages/add-room/add-room.module';
-import { RegionsPageModule } from '../pages/regions/regions.module';
 
-import { RoomPageModule } from '../pages/room/room.module';
-import { DocumentationPageModule } from '../pages/documentation/documentation.module';
 import { StorageProvider } from '../providers/storage/storage';
 import { DatabaseProvider } from '../providers/database/database';
 import { UiUtilsProvider } from '../providers/ui-utils/ui-utils';
@@ -57,7 +40,6 @@ import { InAppBrowser } from '@ionic-native/in-app-browser';
 import { GoogleApiProvider } from '../providers/google-api/google-api';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { IonicStorageModule } from '@ionic/storage';
-import { PagSeguroService } from '../pages/credits/pagseguro.service';
 import { Ionic2RatingModule } from 'ionic2-rating';
 import { Geolocation } from '@ionic-native/geolocation';
 import {firebaseConfig} from '../assets/configs/firebase.js'
@@ -76,7 +58,6 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserModule,
     HttpClientModule,
     HttpModule,
-    CreditsPageModule,
     BrowserAnimationsModule,        
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
@@ -100,34 +81,16 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   exports: [    
     ClientsPageModule,
-    ProfessionalsPageModule,
     WorkPageModule,
     WorkRequestAddPageModule,    
-    LoginPageModule,
-    DocumentationPageModule,
-    CarBrandPageModule,
-    CarBrandAddPageModule,
-    WorkWatchPageModule,
-    ServicessPageModule,
-    ServicessAddPageModule,    
-    HistoryPageModule,  
-    TablesPricePageModule,
-    TablesPriceAddPageModule,    
-    WorkRunHistoryPageModule,
-    ClientsAddPageModule,
-    ProfessionalsAddPageModule,
-    CreditsManualPageModule,
-    SearchDeliveryPageModule,
-    WorkRatePageModule,
-    RoomPageModule,
-    AddRoomPageModule,
-    RegionsPageModule
+    LoginPageModule,    
+    WorkWatchPageModule,    
+    HistoryPageModule
   ],
 
   providers: [    
     DatabaseProvider,
     Camera,
-    PagSeguroService,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UiUtilsProvider,
     DataInfoProvider,

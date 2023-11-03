@@ -47,7 +47,7 @@ urlOnPedidoStatusChanged: string = this.baseurl + '/apiOnPedidoChangeStatus'
   enviaSMS(mensagem_, telefone_){
 
     let tel = "+55" + telefone_
-    let msg = "Sistema Motok informa: " + mensagem_
+    let msg = "Sistema informa: " + mensagem_
     let myData = JSON.stringify({mensagem: msg, telefone: tel});
     
     const headers = new HttpHeaders({'Content-Type':'application/json'});    
@@ -58,7 +58,7 @@ urlOnPedidoStatusChanged: string = this.baseurl + '/apiOnPedidoChangeStatus'
   enviaWhatsApp(mensagem_, telefone_){
 
     let tel = "+55" + telefone_
-    let msg = "Sistema Motok informa: " + mensagem_
+    let msg = "Sistema informa: " + mensagem_
     let myData = JSON.stringify({mensagem: msg, telefone: tel});
     
     const headers = new HttpHeaders({'Content-Type':'application/json'});    

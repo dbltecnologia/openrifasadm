@@ -1,43 +1,38 @@
 
-<ion-header>
+<ion-header class="bg-theme">
+
+
   <ion-navbar text-center no-border-bottom>
     <ion-title *ngIf="requestType === 'Todos'">{{dataText.watchAllOnline}}</ion-title>
     <ion-title *ngIf="requestType === 'Serviço'">{{dataText.watchAll}}</ion-title>
   </ion-navbar>     
-  <ion-buttons end> 
-    <button ion-button style="color: white" (click)="fit()">
-      {{dataText.zoomIn}}
-    </button>       
-    <button ion-button style="color: white" (click)="centerMap()">      
-      {{dataText.center}}
-    </button>      
-    <button ion-button color="secondary" (click)="showWorksNow()" *ngIf="requestType === 'Todos'">      
-      {{dataText.running}} {{totalWorks}}
-    </button>               
-    <button ion-button style="color: white" *ngIf="dataInfo.userInfo && dataInfo.userInfo.isAdmin" (click)="addClientsOnline()">                      
-      {{dataText.clients}} online {{totalOnlineClients}}
-    </button>  
-    <button ion-button style="color: white" (click)="addOnline()">               
-      {{dataText.professionalsAvailable}} {{totalOnline}}
-    </button>            
-    <button ion-button style="color: white"  (click)="showFinished()">               
-      {{dataText.finished}} {{totalWorksFinished}}
-    </button>      
-    <button ion-button style="color: white" (click)="showCanceled()">               
-      {{dataText.canceled}} {{totalWorksCanceled}}
-    </button>  
-    <button ion-button style="color: white" color="secondary"  (click)="showOpen()">               
-      {{dataText.open}} {{totalWorksOpen}}
-    </button>        
-  </ion-buttons>
+  
 </ion-header>
+
 <ion-content>        
   <ion-row style="width:100%; height:100%">    
-    <ion-col  col-4>
-      <ion-list no-lines>      
-        <ion-list-header color="tema" *ngIf="requestType === 'Todos'">{{dataText.professionalsOnline}}</ion-list-header>
-        <ion-list-header color="tema" *ngIf="requestType === 'Cliente'">{{dataText.clients}} online</ion-list-header>
-        <ion-list-header  color="tema" *ngIf="requestType !== 'Todos' && requestType !== 'Cliente'">{{dataText.openJobs}}</ion-list-header>                 
+    <ion-col col-4 padding>
+
+      <ion-buttons end> 
+
+        <button ion-button style="color: white" (click)="fit()">
+          {{dataText.zoomIn}}
+        </button>       
+        <button ion-button style="color: white" (click)="centerMap()">      
+          {{dataText.center}}
+        </button>      
+    
+        <button ion-button color="secondary" (click)="showWorksNow()" *ngIf="requestType === 'Todos'">      
+          {{dataText.running}} {{totalWorks}}
+        </button>               
+    
+        <button ion-button style="color: white">                      
+          {{dataText.clients}} online {{totalOnline}}
+        </button>                
+      </ion-buttons>
+
+      <ion-list no-lines>              
+        <ion-list-header color="tema">Pesquisar online</ion-list-header>        
         <ion-searchbar
             [(ngModel)]="searchTerm"
             (search)="setFilteredItems()"
@@ -51,7 +46,7 @@
                 
         <ion-item *ngFor="let work of allOnline">                  
 
-          <p><b>{{dataText.professional}}:</b> {{work.name}}</p>  
+          <p><b>Usuária:</b> {{work.name}}</p>  
           <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>          
           <p *ngIf="work.latitude"> <b>Latitude:</b> {{work.latitude}}</p>   
           <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>   
@@ -61,7 +56,7 @@
       </ion-list>
 
 
-      <ion-list *ngIf="requestType === 'Cliente'">
+      <ion-list>
                 
         <ion-item *ngFor="let work of allClientsOnline">                  
 
@@ -74,8 +69,7 @@
         
       </ion-list>
 
-      <ion-list *ngIf="requestType !== 'Todos' && requestType !== 'Cliente'">
-                
+      <ion-list *ngIf="requestType !== 'Todos' && requestType !== 'Cliente'">                
 
         <ion-item *ngFor="let work of allJobs">
           
@@ -88,8 +82,7 @@
           <p><b>{{dataText.value}}:</b> {{dataText.currency}} {{work.carInfo.finalValue}}</p>           
           <p><b>Latitude:</b> {{work.workerInfo.latitude}}</p>   
           <p><b>Longitude:</b> {{work.workerInfo.longitude}}</p>   
-          
-          
+                    
           <p *ngIf="work.lastDatetimeStr"><b>{{dataText.lastUpdated}}:</b> {{work.lastDatetimeStr}}</p>   
           
           <ion-row class="mrg-lt-10">

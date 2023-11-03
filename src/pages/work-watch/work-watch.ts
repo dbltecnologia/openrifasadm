@@ -32,9 +32,7 @@ export class WorkWatchPage implements OnInit {
   icon: string 
   requestType: string = "Todos"
 
-  allJobs: any = [] 
-  allJobsFinished: any = []
-  allJobsCanceled: any = []
+
   allOnline: any = [] 
   allClientsOnline: any = [] 
   allWorking: any = [] 
@@ -42,15 +40,7 @@ export class WorkWatchPage implements OnInit {
   
   totalOnline: number = 0
   totalWorks: number = 0
-  totalWorksFinished: number = 0
-  totalWorksOpen: number = 0
-  totalWorksCanceled: number = 0
-  totalOnlineClients: number = 0
-  latLngInterval: any
-
-  worksInterval: any
-  worksNowInterval: any
-
+  
 
   constructor(
     public navCtl: NavController, 
@@ -69,15 +59,6 @@ export class WorkWatchPage implements OnInit {
     window["angularComponentRef"] = { component: this, zone: this._ngZone };
   }
 
-  ngOnDestroy(){  
-    
-    if(this.worksNowInterval)
-      clearInterval(this.worksNowInterval)
-
-    if(this.worksInterval)
-      clearInterval(this.worksInterval)
-  }
-
   ionViewDidLoad() {    
     
     if(this.dataInfo.isHome)
@@ -92,17 +73,10 @@ export class WorkWatchPage implements OnInit {
     loading.present() 
 
     this.icon = this.dataInfo.iconLocationClient
-
-    if(this.dataInfo && this.dataInfo.appConfig && this.dataInfo.appConfig.iconLocationClient)
-      this.icon = this.dataInfo.appConfig.iconLocationClient
-
     
     this.initializeMap()    
     this.centerMap()
-    this.getClients()    
-    this.getWorksNow()  
     this.loadOnlines()
-    this.startIntervalJobs()    
     
     setTimeout(() => {
 
@@ -111,41 +85,7 @@ export class WorkWatchPage implements OnInit {
 
   }
 
-
-  startIntervalWorkers(){
-
-    let time = 30000
-
-    if(this.dataInfo.appConfig && this.dataInfo.appConfig.updateMapTimeWatch){
-      time = this.dataInfo.appConfig.updateMapTimeWatch
-    }
-    
-    this.worksInterval = setInterval(() => {
-      this.getWorksNow()  
-      
-    }, time);
-      
-
-  }
-
-
-  startIntervalJobs(){
-
-    let time = 30000
-
-    if(this.dataInfo.appConfig && this.dataInfo.appConfig.updateMapTimeWatch)
-      time = this.dataInfo.appConfig.updateMapTimeWatch
-    
-    
-    this.worksNowInterval = setInterval(() => {
-      
-      this.loadWorks()  
-      
-    }, time);      
-
-  }
-
-
+  
   loadOnlines(){
 
     this.getWorkers()
@@ -192,11 +132,7 @@ export class WorkWatchPage implements OnInit {
 
     this.clearMarkers(null)
     this.markers = []    
-
-    this.allJobs.forEach(element => {
-        this.searchAndAdd(element)
-    })
-
+   
   }
 
   searchAndAdd(element){
@@ -221,275 +157,12 @@ export class WorkWatchPage implements OnInit {
     this.map.panTo(center);
   }  
 
-  getContent(works){
-
-    var contentString = '<div id="iw-container">' +
-        '<div class="iw-title">Status da corrida ' + works.key + '</div>' +
-        '<div class="iw-content">' +
-          '<div class="iw-subTitle"><p><b> {{dataText.name}} do cliente: </b>' + works.name + ' </p></div>' +
-          '<p><b> {{dataText.name}} do profissional: </b>' + works.workerInfo.name + ' </p>' +          
-          '<p><b> Status: </b>' + works.status + ' </p>' +
-          '<p><b> Origem: </b>' + works.fromAddress + ' </p>' +
-          '<p><b> Destino(s): </b>' + works.toAddress + ' </p>' +
-          '<p><b> Mensagem: </b>' + works.msg + ' </p>' +
-
-          '<button block class="btn btn-primary btn-lg btn-block" onclick="window.angularComponentRef.zone.run(() => {window.angularComponentRef.component.showHistory(\'' + works.key + '\');})">Histórico da corrida</button>' +
-        '</div>' +
-      '</div>';
-
-
-
-    return contentString
-  }
-
-  getContentOnline(works){
-
-    var contentString = '<div id="iw-container">' +
-        '<div class="iw-title">Última vez online ' + works.last + '</div>' +
-        '<div class="iw-content">' +
-          '<div class="iw-subTitle"><p><b> {{dataText.name}} do motoboy: </b>' + works.name + ' </p></div>' +
-          '<p><b> Telefone: </b>' + works.tel + ' </p>' +
-          '<p><b> Endereço: </b>' + works.address + ' </p>' +
-        '</div>' +
-      '</div>';
-
-
-
-    return contentString
-  }
- 
-
-  showPrompt(info) {
-
-    const prompt = this.alertCtrl.create({
-      title: 'Enviar Mensagem',
-      message: "Favor digite a mensagem que deseja enviar",
-      inputs: [
-        {
-          name: 'Histórico da corrida',
-          placeholder: 'Histórico da corrida'
-        }
-      ],
-      buttons: [
-        {
-          text: this.dataText.cancel,
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Enviar',
-          handler: data => {
-
-            this.db.addNotification('Mensagem do sistema', info, data.title)      
-            this.uiUtils.showAlertSuccess("Notificação enviada com sucesso!")      
-          }
-        }
-      ]
-    });
-
-    prompt.present();
-}
-  
-
-  showPromptSMS(tel){
-
-    if(tel){
-
-      const prompt = this.alertCtrl.create({
-        title: 'Enviar Mensagem',
-        message: "Favor digite a mensagem que deseja enviar",
-        inputs: [
-          {
-            name: 'title',
-            placeholder: 'Escrever mensagem'
-          },
-        ],
-        buttons: [
-          {
-            text: this.dataText.cancel,
-            handler: data => {
-              console.log('Cancel clicked');
-            }
-          },
-          {
-            text: 'Enviar',
-            handler: data => {                            
-              
-            }
-          }
-        ]
-      });
-
-      prompt.present();      
-
-    }
-
-
-    else {
-      this.uiUtils.showAlertError("Profissional não possui número cadastrado")
-    }    
-  }
- 
-
   goBack(){
     this.navCtl.pop()
   }
-   
-  showHistory(key){            
 
-    if(this.latLngInterval)
-      clearInterval(this.latLngInterval)
-      
-    let payload = {key : key}
-    this.navCtl.push('WorkRunHistoryPage', {payload: payload})
-  }
-
-
-  showOpen(){
-    this.navCtl.push('HistoryPage', {status: 'Criado'})
-  }
-
-  showCanceled(){
-    this.navCtl.push('HistoryPage', {status: 'Cancelado'})
-  }
-
-  showFinished(){
-    this.navCtl.push('HistoryPage', {status: 'Finalizado'})
-  }
-
-  
-
-  cancelWorkDelivery(work){
-    let alert = this.uiUtils.showConfirm(this.dataText.warning, this.dataText.doYouWantCancel)  
-    alert.then((result) => {
-
-      if(result)  
-        this.cancelDeliveryContinue(work)
-    })  
-  }
-
-  cancelDeliveryContinue(work){ 
-    let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
-    loading.present() 
-
-    let msg = "Cancelado pelo painel às " + moment().format("DD/MM/YYYY HH:mm:ss")
-
-
-    this.db.cancelWork(work.key, msg)
-
-    .then( () => {
-        this.uiUtils.showAlert(this.dataText.warning, this.dataText.removeSuccess)
-        
-        if(loading)
-          loading.dismiss() 
-
-
-
-        this.showWorksNow()
-    })
-  }  
-
-  finishWorkDelivery(work){
-
-    let alert = this.uiUtils.showConfirm(this.dataText.warning, this.dataText.doYouWantFinish)  
-    alert.then((result) => {
-
-      if(result)  
-        this.finishDeliveryContinue(work)
-    })  
-  }
-
-  finishDeliveryContinue(work){  
-
-    let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
-    loading.present() 
-
-    this.db.changeStatus(work.key, "Finalizado")
-
-    .then( () => {
-
-        this.uiUtils.showAlert(this.dataText.warning, this.dataText.finishedSuccess)             
-
-        if(loading)
-          loading.dismiss() 
-
-      this.addOnline()  
-    })
-  }  
-  
-
-
-
-  edit(work){    
-
-    if(this.latLngInterval)
-      clearInterval(this.latLngInterval)
-
-   this.navCtl.push('SearchDeliveryPage', {payload: work})    
-  }  
-
-
-  getClients(){
-
-    this.db.getClients()
-
-    .subscribe(data => {
-      this.getClientsCallback(data)              
-    })
-    
-  }
-
-  getClientsCallback(data){   
-
-    this.totalOnlineClients = 0
-    this.allClientsOnline = []
-    
-    data.forEach(element => {
-
-      let info = element.payload.val()
-      info.key = element.payload.key      
-      info.lastDatetimeStr = moment(info.lastDatetime).format("DD/MM/YYYY hh:mm:ss")
-
-      if(info.status !== 'Desativado' && info.status !== 'Removido'){                
-
-        if(info.lastDatetime){
-
-          if(moment(info.lastDatetime).isSame(moment(), 'day') && 
-               moment(info.lastDatetime).add(10, 'minutes').isAfter(moment())){        
-                                        
-  
-            if(this.dataInfo.userInfo.isAdmin)          
-              this.getClientsContinue(info)
-            
-            if(this.dataInfo.userInfo.managerRegion){
-      
-              if(info.region === this.dataInfo.userInfo.managerRegion)
-                this.getClientsContinue(info)
-              
-            }
-          }
-
-        }
-        
-
-      }
-
-      
-
-    })
-
-  }
-
-
-  getClientsContinue(info){
-
-    this.totalOnlineClients++
-    this.allClientsOnline.push(info)
-  }
-  
   getWorkers(){
-
+    
     return new Promise<void>((resolve, reject) => {
 
       this.db.getWorkers()
@@ -516,48 +189,13 @@ export class WorkWatchPage implements OnInit {
       let info = element.payload.val()
       info.key = element.payload.key
 
-      info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss")      
-      const isWorking = this.isWorking(info)
+      info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss")  
+      
+      console.log('Info', info)
 
-      if(info.status !== 'Desativado' && info.status !== 'Removido'){
-
-        if(info.statusJob){
-
-          if(!isWorking){
-            
-            if(moment(info.lastDatetime).add(10, 'minutes').isAfter(moment())){
-
-              if(this.dataInfo.userInfo.isAdmin)          
-                this.getWorkersContinue(info)    
-                          
-              else if(info.region === this.dataInfo.userInfo.region)
-                  this.getWorkersContinue(info)    
-                                    
-            }                    
-          } else {          
-  
-            this.allJobs.forEach(element => {
-  
-              if(element.driverUid === info.uid){              
-  
-                element.workerInfo.latitude = info.latitude
-                element.workerInfo.longitude = info.longitude
-              }
-              
-            });
-  
-  
-            this.allWorking.push(info)
-  
-          }
-          
-        }
-
-      }
-            
-     
-        
-        
+      if(info.statusJob)
+        this.getWorkersContinue(info)                                                  
+                                 
     });
 
     this.sortOnline()
@@ -586,125 +224,7 @@ export class WorkWatchPage implements OnInit {
 
     this.allOnline = tmp
   }
-  
-  getWorksNow(){          
-
-    this.works = this.db.getAllWorksAccepteds()
-
-    this.works.subscribe( data => {   
-        this.loadWorksCallback(data)                                      
-    }) 
-
-  }
-
-  loadWorksCallback(data){
-    
-    this.allJobs = []
-    this.totalWorks = 0
-    this.totalWorksFinished = 0
-    this.totalWorksCanceled = 0
-    this.totalWorksOpen = 0
-   
-    data.forEach(element => {
-  
-      let info = element.payload.val()              
-      info.key = element.key
-
-      if(info.datetime){        
-
-        if(this.dataInfo.userInfo.isAdmin){
-          this.loadWorksAddNow(info)
-        }
-
-        else {
-
-          if(info.uid === this.dataInfo.userInfo.uid){
-            this.loadWorksAddNow(info)          
-          }
-
-        }                
-      }      
-
-    })     
-    
-    this.sortWorks()    
-            
-  }
-
-
-  loadWorksAddNow(info){
-
-    let today = moment()        
-
-    if(moment(info.datetime).isSame(today, 'day')){    
-                  
-      info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss")
-          
-      if(info.status === 'Aceito' || info.status === 'Iniciado'){      
-
-        info.image = this.icon                      
-
-        this.allJobs.push(info)  
-        this.totalWorks++                             
-      }    
-      
-      
-      else if(info.status === 'Criado'){
-        this.totalWorksOpen++
-      }
-      
-      else if(info.status === 'Finalizado'){
-        this.allJobsFinished.push(info)
-        this.totalWorksFinished++
-      }
-
-
-      else if(info.status === 'Cancelado'){
-        this.allJobsCanceled.push(info)
-        this.totalWorksCanceled++
-      }
-
-
-    }
-  }
-
-  sortWorks(){
-
-    let tmp = this.allOnline.sort(function(a,b) {
-
-
-      if(a.workerInfo && b.workerInfo){
-
-        if(a.workerInfo.name < b.workerInfo.name) { return -1; }
-        if(a.workerInfo.name > b.workerInfo.name) { return 1; }
-        
-      }
-      
-      return 0;
-
-    })    
-
-    this.allOnline = tmp
-  }
-
-  
-  addClientsOnline(){
-
-    this.uiUtils.showToast(this.dataText.showClients)
-    this.requestType = 'Cliente'    
-    this.clearAll()   
-
-    this.allClientsOnline.forEach(info => {
-
-        if(info.datetime){
-           info.datetime = moment(info.datetime).format("DD/MM/YYYY HH:mm:ss")
-        }
-
-        this.loadOnlineMarkers(info)
-    });
-        
-
-  }
+ 
 
   addOnline(){        
 
@@ -750,53 +270,7 @@ export class WorkWatchPage implements OnInit {
   }
   
   
-  showWorksNow(){     
-    this.requestType = "Serviço"            
-    this.loadWorks()            
-  }
-
-  loadWorks(){    
-
-
-    this.clearAll()
-
-    if(this.allJobs.length > 0){      
-
-      this.allJobs.forEach(element => {    
-
-        if(this.dataInfo.userInfo.isAdmin){
-            this.loadWorksAdd(element)          
-        }
-        else {
-
-          if(element.uid === this.dataInfo.userInfo.uid){
-            this.loadWorksAdd(element)          
-          }
-
-        }
-
-           
-
-      });    
-
-    } else {
-
-      this.uiUtils.showToast(this.dataText.noJobsRunning)      
-    }
-
-    
-  }
-
-  loadWorksAdd(element){
-
-    if(element.datetime)
-      element.datetimeStr = moment(element.datetime).format("DD/MM/YYYY HH:mm:ss")
   
-
-    this.loadUsersMarkers(element)     
-
-  }
-
 
   loadUsersMarkers(info){        
     
@@ -805,8 +279,15 @@ export class WorkWatchPage implements OnInit {
     let longitude = info.workerInfo.longitude    
 
     if(info.workerInfo && latitude && longitude){
-           
+                 
       info.image = this.icon
+
+      console.log('info', info)
+
+      if(! info.statusJob){
+        info.image = "https://firebasestorage.googleapis.com/v0/b/inova-f30e4.appspot.com/o/dot_red.gif?alt=media&token=2115d0b3-241c-4ea5-a768-1b50f4785553&_gl=1*1cla932*_ga*Mzc1OTE1ODA2LjE2OTU2MDg1NTI.*_ga_CW55HF8NVT*MTY5ODk3Mzg4Mi42Ni4xLjE2OTg5NzQ1MTQuNDMuMC4w"
+
+      }
 
         let marker = new google.maps.Marker({        
           label: {
@@ -842,47 +323,5 @@ export class WorkWatchPage implements OnInit {
 
   
   
-  isWorking(element): Boolean{
-
-    let working = false
-
-    this.allJobs.forEach(job => {
-
-      if(job.workerInfo){
-
-        if(job.workerInfo.uid === element.uid)
-          working = true
-      }
-      
-    });
-
-
-  return working
-}
-
-
-
-restartWork(work){
-
-
-  let alert = this.uiUtils.showConfirm(this.dataText.warning, this.dataText.doYouWantRestart)  
-  alert.then((result) => {
-
-    if(result)  
-      this.restartWorkContinue(work)
-  })  
-
-}
-
-restartWorkContinue(work){              
-  
-  this.db.restartWork(work)
-
-  .then( () => {
-      this.uiUtils.showAlert(this.dataText.warning, this.dataText.restartOk)                        
-  })
- }  
-
-
  
 }

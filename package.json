@@ -1,8 +1,8 @@
 {
-  "name": "motokadministrador",
+  "name": "mariapenhaadmin",
   "version": "0.0.2",
-  "author": "DBL Tecnologia",
-  "homepage": "https://www.dbltecnologia.com.br/",
+  "author": "Inova",
+  "homepage": "https://www.inova.in/",
   "private": true,
   "scripts": {
     "clean": "ionic-app-scripts clean",
