@@ -1,12 +1,9 @@
 
 <ion-header class="bg-theme">
-
-
   <ion-navbar text-center no-border-bottom>
     <ion-title *ngIf="requestType === 'Todos'">{{dataText.watchAllOnline}}</ion-title>
     <ion-title *ngIf="requestType === 'Serviço'">{{dataText.watchAll}}</ion-title>
-  </ion-navbar>     
-  
+  </ion-navbar>       
 </ion-header>
 
 <ion-content>        
@@ -35,98 +32,42 @@
          </ion-searchbar>                        
       </ion-list>
 
-      <ion-list *ngIf="requestType === 'Todos'">
-                
+      <ion-list *ngIf="requestType === 'Todos'">                
         <ion-item *ngFor="let work of allOnline">                  
-
           <p><b>Usuária:</b> {{work.name}}</p>  
-          <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>          
+          <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>                    
+          <p *ngIf="work.formatted_address"><b>Última localização:</b>{{work.formatted_address}}</p>    
+          <p *ngIf="work.lastDatetime"><b>Visto por último online:</b> {{work.lastDatetime}}</p>        
+          <p *ngIf="work.lastPanic"><b>Último acionamento:</b> {{work.lastPanic}}</p>        
           <p *ngIf="work.latitude"> <b>Latitude:</b> {{work.latitude}}</p>   
           <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>
-          <p *ngIf="work.formatted_address">Última localização:<b>{{work.formatted_address}}</b></p> 
-   
-          <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p>   
+          <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p>                
+      
+          <div class="button-container">            
+            <button ion-button color="secondary" (click)="showHistory(work)" *ngIf="hasWork">
+              <ion-icon name="book" class="button-icon"></ion-icon> Ocorrência Ativa
+            </button> 
+            <button ion-button color="primary" (click)="showMap(work)">
+              <ion-icon name="map" class="button-icon"></ion-icon> Visualizar no mapa
+            </button>                       
+            <button ion-button color="primary" (click)="showHistory(work)">
+              <ion-icon name="book" class="button-icon"></ion-icon> Ocorrências
+            </button>    
+          </div>
+      
         </ion-item>                
-
       </ion-list>
 
-
-      <ion-list>
-                
+      <ion-list>                
         <ion-item *ngFor="let work of allClientsOnline">                  
-
           <p><b>{{dataText.clients}}:</b> {{work.name}}</p>  
           <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>    
-
           <p *ngIf="work.formatted_address">Última localização:<b>{{work.formatted_address}}</b></p> 
           <p *ngIf="work.latitude"> <b>Latitude:</b> {{work.latitude}}</p>   
           <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>   
-          <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p> 
-          
-            
-        </ion-item>        
-        
+          <p *ngIf="!work.latitude && !work.longitude "><b>{{dataText.locationNotAvailable}}</b></p>                       
+        </ion-item>                
       </ion-list>
-
-      <ion-list *ngIf="requestType !== 'Todos' && requestType !== 'Cliente'">                
-
-        <ion-item *ngFor="let work of allJobs">
-          
-          <p *ngIf="work.datetimeStr"><b>Data Solicitação:</b> {{work.datetimeStr}} </p>
-          
-          <p><b>{{dataText.clients}}:</b> {{work.name}}</p>             
-          <p *ngIf="work.workerInfo"><b>{{dataText.professional}}:</b> {{work.workerInfo.name}}</p>  
-          <p><b>{{dataText.status}}:</b> {{work.status}}</p>          
-          <p><b>{{dataText.pickUp}}:</b> {{work.fromAddress}}</p>                    
-          <p><b>{{dataText.value}}:</b> {{dataText.currency}} {{work.carInfo.finalValue}}</p>           
-          <p><b>Latitude:</b> {{work.workerInfo.latitude}}</p>   
-          <p><b>Longitude:</b> {{work.workerInfo.longitude}}</p>   
-                    
-          <p *ngIf="work.lastDatetimeStr"><b>{{dataText.lastUpdated}}:</b> {{work.lastDatetimeStr}}</p>   
-          
-          <ion-row class="mrg-lt-10">
-
-            <ion-col>                              
-              <button ion-button icon-start clear small (click)="edit(work)"> 
-                  <ion-icon name="clipboard" color="secondary"></ion-icon>
-                <div>{{dataText.edit}}</div>
-              </button>
-            </ion-col>
-            
-            <ion-col  *ngIf="work.status === 'Criado' || work.status === 'Vencida'">
-              <button ion-button icon-start clear small (click)="restartWork(work)"> 
-                  <ion-icon name="md-refresh"></ion-icon>
-                <div>{{dataText.restart}}</div>
-              </button>
-            </ion-col>
-
-            <ion-col *ngIf="work.status !== 'Finalizado' && work.status !== 'Cancelado' && work.status !== 'Vencida'">                              
-                <button ion-button icon-start clear small (click)="finishWorkDelivery(work)"> 
-                    <ion-icon name="md-flag"></ion-icon>
-                  <div>{{dataText.finish}}</div>
-                </button>
-              </ion-col>
-
-              <ion-col *ngIf="work.status !== 'Finalizado' && work.status !== 'Cancelado' && work.status !== 'Vencida'">                              
-                <button ion-button icon-start clear small (click)="cancelWorkDelivery(work)"> 
-                    <ion-icon name="trash" color="danger"></ion-icon>
-                  <div>{{dataText.cancel}}</div>
-                </button>
-              </ion-col>
-    
-              <ion-col>    
-                <button ion-button icon-start clear small (click)="showHistory(work.key)">
-                  <ion-icon name="md-open"></ion-icon>
-                  <div>{{dataText.history}}</div>
-                </button>
-              </ion-col> 
-                    
-        </ion-row>
-
-        </ion-item>
-
-      </ion-list>
-
     </ion-col>
 
     <ion-col col-8>

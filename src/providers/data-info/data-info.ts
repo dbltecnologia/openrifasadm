@@ -36,13 +36,12 @@ appCreditUseTotalValue:Boolean = true
   latitude: number = 0
   longitude: number = 0
   userType: number = 2  
+  workStatus: any = ['Solicitado', 'Central ciente', 'Ajuda chegou', 'Finalizado', 'Cancelado']
   
   iconLocationGreen: string = 'https://firebasestorage.googleapis.com/v0/b/inova-f30e4.appspot.com/o/googlemapbluedot.png?alt=media&token=ebbb65e4-9e46-4fc8-b6e8-c58f5538b9e1&_gl=1*1bx84uc*_ga*Mzc1OTE1ODA2LjE2OTU2MDg1NTI.*_ga_CW55HF8NVT*MTY5ODk3Njc5OS42Ny4wLjE2OTg5NzY3OTkuNjAuMC4w'  
   iconLocationRed: string = 'https://firebasestorage.googleapis.com/v0/b/inova-f30e4.appspot.com/o/dot_red.gif?alt=media&token=2115d0b3-241c-4ea5-a768-1b50f4785553&_gl=1*17j6rem*_ga*Mzc1OTE1ODA2LjE2OTU2MDg1NTI.*_ga_CW55HF8NVT*MTY5ODk3Njc5OS42Ny4xLjE2OTg5NzcwMzMuNjAuMC4w'
-
   
-
-  token: string = 'DemoApp'      
+  token: string = 'MariaPenha'      
   isAdmin: Boolean = false;
   addressServer: string = "localhost" 
   eventFcmToken: string = 'fcm:netToken'

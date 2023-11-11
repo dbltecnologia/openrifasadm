@@ -48,7 +48,7 @@ export class ClientsPage {
   reload() {
     const loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations);
     loading.present();
-    this.usersWorkers = this.db.getUser();
+    this.usersWorkers = this.db.getUsers();
     const sub = this.usersWorkers.subscribe(data => {
       sub.unsubscribe();
       this.processUserData(data);

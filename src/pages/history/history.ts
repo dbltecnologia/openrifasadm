@@ -18,10 +18,8 @@ export class HistoryPage implements OnDestroy {
   works: Observable<any>;
   worksArray: any = [];
   usersWorkersArray: any = [];
-  clientsWorkersArray: any = [];
   usersWorkers: any = [];
   client: any;
-  worker: any;
   selectedDate: string;
   selectedDateEnd: string;
   totalJobs: number = 0;
@@ -59,7 +57,15 @@ export class HistoryPage implements OnDestroy {
     this.selectedDateEnd = moment().format();
     this.selectedDate = moment().startOf('month').format();
     this.usersWorkers = [];
-    this.getUser();
+
+
+    if(! this.navParams.get('work')) {
+      this.getUser();
+    }
+    
+    this.showHistory()    
+
+    
   }
 
   getUser() {
@@ -76,38 +82,29 @@ export class HistoryPage implements OnDestroy {
     });
   }
 
-  
-
-  workersChanged(event) {
-    console.log('Worker modified:', event);
-  }
-
   clientChange(event) {
     console.log('Client modified:', event.value.uid);
   }
 
   clear() {
     this.client = "";
-    this.worker = "";
     this.status = "Todos";
     this.worksArray = [];
   }
 
   showHistory() {
-    if (moment(this.selectedDate).isAfter(this.selectedDateEnd, 'days')) {
+
+    if (moment(this.selectedDate, "DD/MM/YYYY").isAfter(this.selectedDateEnd, 'days')) {
+      this.uiUtils.showAlertError("Data final não pode ser anterior a data inicial");      
+    } else {
       if (moment(this.selectedDate).diff(this.selectedDateEnd) > 30) {
         this.uiUtils.showAlertError("Limite de 30 dias excedido!");
       } else {
-        this.backHistory();
+        this.getHistory();
       }
-    } else {
-      this.uiUtils.showAlertError("Data final não pode ser anterior a data inicial");
     }
   }
 
-  backHistory() {
-    this.getHistory();
-  }
 
   getHistory() {
     let loading = this.uiUtils.showLoading(this.dataText.loading);
@@ -140,7 +137,8 @@ export class HistoryPage implements OnDestroy {
     let loading = this.uiUtils.showLoading(this.dataText.loading);
     loading.present();
 
-    this.works = this.db.getAllWorksAcceptedsDate(year, month);
+
+    this.works = this.db.getAllWorks(year, month);
 
     this.worksSubscription = this.works.subscribe(data => {
       this.worksCallback(data);
@@ -152,7 +150,7 @@ export class HistoryPage implements OnDestroy {
     this.worksArray = data.map(element => {
       let info = element.payload.val();
       info.key = element.payload.key;
-      info.showIfood = false;
+      
       return info;
     });
 
@@ -170,4 +168,14 @@ export class HistoryPage implements OnDestroy {
   get() {
     this.getHistory();
   }
+
+  changeStatus(work, status){
+    
+    this.db.updateStatusWork(work, status)
+    .then(data => {
+      console.log('data', data)
+    })
+
+  }
+
 }

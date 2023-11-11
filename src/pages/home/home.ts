@@ -47,7 +47,6 @@ export class HomePage {
 
   startInterface() {
     this.events.publish(this.dataInfo.eventFcmStart, 1);
-    this.getServices();
     this.getCurrentLocation().subscribe();
     if (this.dataInfo.isDev) {
       this.dev();
@@ -85,14 +84,6 @@ export class HomePage {
     this.events.publish('logout');
   }
 
-  getServices() {
-    this.serviceSubscription = this.db.getServices().subscribe(data => {
-      this.handleServiceData(data);
-      if (this.serviceSubscription) {
-        this.serviceSubscription.unsubscribe();
-      }
-    });
-  }
 
   handleServiceData(data) {
     const services = [];
@@ -139,11 +130,7 @@ export class HomePage {
   showRedMine() {
     this.openInAppBrowser("https://inova.in");
   }
-
-  goPageServicess() {
-    this.navCtrl.push('ServicessPage');
-  }
-
+ 
   suporte() {
     window.open(this.dataInfo.appConfig.appHelp, '_blank');
   }

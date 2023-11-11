@@ -3,6 +3,18 @@ page-history {
     .bg-theme {	  
         background: $theme-color !important;
     }
+
+
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .button-icon {
+        margin-right: 5px;
+      }
+
       
     .header {
         &.bg-transparent {

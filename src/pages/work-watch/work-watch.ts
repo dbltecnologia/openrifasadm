@@ -92,14 +92,14 @@ export class WorkWatchPage implements OnInit {
     loading.present() 
     this.icon = this.dataInfo.iconLocationGreen    
     this.initializeMap()    
-    this.centerMap()
-    this.loadOnlines()    
-    setTimeout(() => {
-      loading.dismiss()   
-      this.isInitializing = false
-    }, 2000);
-  }
-  
+    this.centerMap()    
+    this.loadOnlines()
+
+    this.getWorks()  
+
+    loading.dismiss()   
+    this.isInitializing = false    
+  }    
 
   loadOnlines(){
     this.getUsers()
@@ -160,6 +160,33 @@ export class WorkWatchPage implements OnInit {
     this.navCtl.pop()
   }
 
+
+  getWorks(){
+
+    const year = moment().format("YYYY");
+    const month = moment().format("MM");
+
+    this.db.getAllWorksAccepteds(year, month)
+    .subscribe(data => {
+
+      this.totalWorks = data.length
+
+      data.forEach(element => {
+        let info: any = element.payload.val();
+        info.key = element.payload.key;
+        info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss");
+        
+        info.hasWork = this.checkIfUserHasWork(info.uid)
+
+        this.allWorking.push(info)
+      })
+
+      console.log('allWorking', this.allWorking)
+
+      
+    })
+  }
+
   getUsers(){
     
     return new Promise<void>((resolve, reject) => {
@@ -172,6 +199,7 @@ export class WorkWatchPage implements OnInit {
   }
 
   getUserCallback(data) {
+    
     this.allOnline = [];
     this.allOffline = []; 
     this.totalOnline = 0;
@@ -184,15 +212,17 @@ export class WorkWatchPage implements OnInit {
 
       console.log('Status da usuária ', info.name, info.statusJob)
 
-      if (info.statusJob) {
+      if (info.statusJob) { 
+
         this.totalOffline++;
         this.allOffline.push(info);
         
       } else {
+
         this.allOnline.push(info);
         this.totalOnline++;                
 
-        if(this.isInitializing)
+        if(! this.isInitializing)
           this.audioUtils.play('tabSwitch');
 
         const cacheKey = `${info.latitude}-${info.longitude}`;
@@ -200,18 +230,16 @@ export class WorkWatchPage implements OnInit {
         const now = moment();
         
         if (cacheEntry && now.diff(cacheEntry.timestamp, 'minutes') < 60) { 
-          console.log('Using cached address:', cacheEntry.address);          
+          console.log('Using cached address:', cacheEntry.address);   
+          info.formatted_address = cacheEntry.address;  
+               
         } else {          
 
           this.routing.geocodeLatLng(info.latitude, info.longitude)
           .then((data: any) => {
             
-            console.log('Endereço', data);            
-
             const formatted_address = data.result.formatted_address;
             this.addressCache.set(cacheKey, { address: formatted_address, timestamp: now });    
-
-            console.log('Endereço', formatted_address);
 
             info.formatted_address = formatted_address;
           });
@@ -222,10 +250,19 @@ export class WorkWatchPage implements OnInit {
     this.sortOnline()
   }
 
-  getUserContinue(info){
+  // create a function to check inside the array if the user has some work with the status different from Finalizado
+  // if yes, return true, else return false
 
-    this.totalOnline++
-    this.allOnline.push(info)
+  checkIfUserHasWork(user){
+    let hasWork = false;
+
+    this.allWorking.forEach(element => {
+      if(element.uid == user.uid){
+        hasWork = true;
+      }
+    });
+
+    return hasWork;
   }
 
   sortOnline(){
@@ -262,8 +299,6 @@ export class WorkWatchPage implements OnInit {
   } 
 
   loadOnlineMarkers(info){    
-
-    console.log('Atualizando ', info.name, info.icon)
   
       let marker = new google.maps.Marker({        
         label: {
@@ -289,15 +324,10 @@ export class WorkWatchPage implements OnInit {
       
 
   loadUsersMarkers(info){     
-    
-    
-    console.log('loadUsersMarkers ', info.workerInfo.name, info.workerInfo.icon)
-        
+            
     let latitude = info.workerInfo.latitude
     let longitude = info.workerInfo.longitude    
     let iconUrl = info.statusJob ? this.dataInfo.iconLocationGreen : this.dataInfo.iconLocationRed;
-
-    console.log('iconUrl', iconUrl)
 
     if(info.workerInfo && latitude && longitude){
                      
@@ -329,5 +359,16 @@ export class WorkWatchPage implements OnInit {
     }        
 
   }   
+
+  showMap(work){
+    console.log('work', work)
+    let latitude = work.latitude
+    let longitude = work.longitude    
+    this.map.setCenter(new google.maps.LatLng(latitude, longitude));
+  }
+
+  showHistory(work){    
+    this.navCtl.push('HistoryPage', {work: work})
+  }
      
 }

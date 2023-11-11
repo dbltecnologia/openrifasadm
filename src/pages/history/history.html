@@ -5,171 +5,99 @@
     </ion-navbar>       
 </ion-header>
     
-  <ion-content padding>
+<ion-content padding>
+  
+  <ion-list no-lines>
 
-    
-    <ion-list no-lines>
-
-      <ion-row>
-        <ion-col>
-          <ion-item [class.no-border]="platform.is('core')" no-lines>
-            <ion-label stacked>{{dataText.startDate}}</ion-label>
-            <ion-datetime displayFormat="DD/MM/YYYY" min="2020-01-01" doneText="OK" cancelText="{{dataText.cancel}}" [(ngModel)] ="selectedDate"></ion-datetime>        
-          </ion-item>                
-        </ion-col>
-
-        <ion-col>
-          <ion-item [class.no-border]="platform.is('core')" no-lines>
-            <ion-label stacked>{{dataText.endDate}}</ion-label>
-            <ion-datetime displayFormat="DD/MM/YYYY" min="2020-01-01" doneText="OK" cancelText="{{dataText.cancel}}" [(ngModel)] ="selectedDateEnd"></ion-datetime>        
-          </ion-item>    
-        </ion-col> 
-        
-      </ion-row>
-      
-      <ion-row>
-
-        <ion-col>
-          
-        
-          <ion-item  no-lines>
-            
-            <ion-label>{{dataText.clients}}</ion-label>
-            <ionic-selectable
-              item-content 
-              [(ngModel)]="client"
-              [items]="clientsWorkersArray"
-              itemValueField="uid"              
-              itemTextField="name"
-              [canSearch]="true"
-              (onChange)="clientChange($event)">
-            </ionic-selectable>
-          </ion-item>
-          
-        </ion-col>
-
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          
-          <ion-item [class.no-border]="platform.is('core')" no-lines>
-            
-            <ion-label stacked>{{dataText.selectStatus}}</ion-label>  
-
-            <ion-select [(ngModel)]="status" (ionChange)="getHistory()">
-              <ion-option *ngFor="let statuss of dataInfo.workStatus">{{statuss}}</ion-option>                                                                              
-            </ion-select>                          
-          </ion-item>
-
-        </ion-col>
-        
-      </ion-row>          
-
-    </ion-list> 
-
-    <ion-list *ngIf="reportsArray.length > 0">           
-    
-      <ion-card class="trip card" text-wrap *ngFor="let report of reportsArray" no-lines padding>
-        
-        <p><b>{{dataText.dateRequest}}:</b> {{report.datetime}} </p>
-        <p><b>{{dataText.datetime}}:</b> {{report.data}} </p>        
-        <p><b>{{dataText.status}}:</b> {{report.statusReport}} </p>
-
-        <ion-row>
-          <ion-col>
-            <button ion-button full icon-start text-uppercase (click)="open(report)" color="secondary"  [disabled]="report.statusReport !== 'Finalizado'">
-              <ion-icon name="md-clipboard"></ion-icon>
-              <div>{{dataText.openReport}}</div></button>
-          </ion-col>
-             
-
-          
-          <ion-col>            
-            <button ion-button full icon-start text-uppercase (click)="removeReport(report)"  color="danger"  [disabled]="report.statusReport === 'Finalizado'"> 
-                <ion-icon name="trash"></ion-icon>
-              <div>{{dataText.remove}}</div>
-            </button>
-          </ion-col> 
-          
-      </ion-row>  
-
-      </ion-card>
-    </ion-list>
-
-    <ion-list *ngIf="worksArray.length > 0"> 
-
-      <ion-list-header class="bg-theme text-white" *ngIf="worksArray && worksArray.length > 0">{{dataText.resumeServices}}</ion-list-header>
-
-       <ion-row>
-          <ion-col><p><b>{{dataText.totalServices}}:</b> {{totalJobs}} </p></ion-col>
-       </ion-row>       
-                              
-      <ion-list-header class="bg-theme text-white">{{dataText.results}}</ion-list-header>
-    
-      <ion-card class="trip card" text-wrap *ngFor="let work of worksArray" no-lines>
-
-        <ion-item>
-            <ion-avatar item-start>
-              <img src="./assets/imgs/default-user.png" *ngIf="! work.photo">
-              <img src="{{work.photo}}" *ngIf="work.photo">
-            </ion-avatar>
-
-            <p><b>{{dataText.key}}:</b> {{work.key}} </p>
-            <p><b>{{dataText.clients}}:</b> {{work.name}} </p>
-            <p><b>{{dataText.status}}:</b> {{work.status}} </p>
-
-            <p *ngIf="work.datetime"><b>{{dataText.dateRequest}}:</b> {{work.datetime}} </p>             
-            <p *ngIf="work.datetimeStart"><b>{{dataText.dateArrived}}:</b> {{work.datetimeStart}} </p>
-            <p *ngIf="work.datetimeFinish"><b>{{dataText.dateFinished}}:</b> {{work.datetimeFinish}} </p>              
-            <p *ngIf="work.totalTimeWaiting"><b>{{dataText.estimatedTime}}:</b> {{work.totalTimeWaiting}} {{dataText.minutes}}</p>                                                
-          
-          </ion-item>
-                                                          
-        </ion-card>
-
-    </ion-list>
-      
-  </ion-content>
-
-  <ion-footer>
-
-    <ion-row>          
-
-      <ion-col *ngIf="!isReportOpen">
-
-        <button ion-button block class="btn bg-theme mrg-bt-10 text-white" (click)="showReport()">
-          <ion-icon name="folder-open" item-start style="margin-right: 15px;"></ion-icon>          
-          {{dataText.reportsGenerated}}
-        </button>
-      </ion-col>
-
-      <ion-col *ngIf="isReportOpen">
-        <button ion-button block class="btn bg-theme mrg-bt-10 text-white" (click)="backHistory()">
-          <ion-icon name="md-search" item-start style="margin-right: 15px;"></ion-icon>
-          {{dataText.newSearch}}
-        </button> 
-      </ion-col>
-      
-      <ion-col *ngIf="!isReportOpen">
-        <button ion-button full text-uppercase (click)="showHistory()" class="btn bg-theme mrg-bt-10 text-white ">
-            <ion-icon name="md-search" style="margin-right: 10px;"></ion-icon> {{dataText.search}}
-        </button>
+    <ion-row>
+      <ion-col>
+        <ion-item no-lines>
+          <ion-label stacked>{{dataText.startDate}}</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" min="2020-01-01" doneText="OK" cancelText="{{dataText.cancel}}" [(ngModel)] ="selectedDate"></ion-datetime>        
+        </ion-item>                
       </ion-col>
 
       <ion-col>
-        <button ion-button full text-uppercase (click)="clear()" class="btn bg-theme mrg-bt-10 text-white ">
-            <ion-icon name="md-trash" style="margin-right: 10px;"></ion-icon> {{dataText.clear}}
-        </button>
-      </ion-col>  
-
-      <ion-col>
-        <button ion-button full text-uppercase (click)="downloadExcel()" [disabled]="worksArray.length === 0" class="btn bg-theme mrg-bt-10 text-white ">
-          <ion-icon name="md-download"  style="margin-right: 10px;"></ion-icon> Download
-        </button>  
-      </ion-col>
-
+        <ion-item no-lines>
+          <ion-label stacked>{{dataText.endDate}}</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY" min="2020-01-01" doneText="OK" cancelText="{{dataText.cancel}}" [(ngModel)] ="selectedDateEnd"></ion-datetime>        
+        </ion-item>    
+      </ion-col> 
+      
     </ion-row>
+    
+    <ion-row>
 
+      <ion-col *ngIf="usersWorkersArray && usersWorkersArray.length > 0">
+                
+        <ion-item  no-lines>
+          
+          <ion-label>{{dataText.clients}}</ion-label>
+          <ionic-selectable
+            item-content 
+            [(ngModel)]="client"
+            [items]="clientsWorkersArray"
+            itemValueField="uid"              
+            itemTextField="name"
+            [canSearch]="true"
+            (onChange)="clientChange($event)">
+          </ionic-selectable>
+        </ion-item>
+        
+      </ion-col>
 
-  </ion-footer>
+    </ion-row>     
+
+  </ion-list> 
+
+  <ion-list *ngIf="worksArray.length > 0">    
+    <ion-list-header class="bg-theme text-white">{{dataText.results}}</ion-list-header>    
+    <ion-card class="trip card" text-wrap *ngFor="let work of worksArray" no-lines>
+        <ion-item>
+
+          <ion-avatar item-start>
+            <img src="./assets/imgs/default-user.png" *ngIf="! work.photo">
+            <img src="{{work.photo}}" *ngIf="work.photo">
+          </ion-avatar>
+          <p><b>{{dataText.key}}:</b> {{work.key}} </p>
+          <p><b>{{dataText.clients}}:</b> {{work.name}} </p>
+          <p><b>{{dataText.status}}:</b> {{work.status}} </p>
+          <p *ngIf="work.datetime"><b>{{dataText.dateRequest}}:</b> {{work.datetime}} </p>             
+          <p *ngIf="work.datatimeCentralIsAware"><b>Horário central ciente:</b> {{work.datatimeCentralIsAware}} </p>
+          <p *ngIf="work.datatimeHelpArrived"><b>Horário equipe no local:</b> {{work.datatimeHelpArrived}} </p>          
+          <p *ngIf="work.datatimeFinished"><b>Horário finalizado</b> {{work.datatimeFinished}} </p>
+          <p *ngIf="work.datatimeCanceled"><b>Horário cancelado:</b> {{work.datatimeCanceled}} </p>                        
+        </ion-item>   
+        <div class="button-container">            
+          <button ion-button small color="secondary" (click)="changeStatus(work, 'Central ciente')" *ngIf="work.status === 'Solicitado'">
+            <ion-icon name="book" class="button-icon"></ion-icon>Central ciente
+          </button> 
+          <button ion-button small color="primary" (click)="changeStatus(work, 'Ajuda chegou')" *ngIf="work.status === 'Central ciente'">
+            <ion-icon name="map" class="button-icon"></ion-icon>Sinalizar ajuda no local
+          </button>                       
+          <button ion-button small color="primary" (click)="changeStatus(work, 'Finalizado')" *ngIf="work.status === 'Ajuda chegou'">
+            <ion-icon name="book" class="button-icon"></ion-icon>Finalizar
+          </button>    
+          <button ion-button small color="primary" (click)="changeStatus(work, 'Cancelado')" *ngIf="work.status !== 'Finalizado' && work.status !== 'Cancelado'">
+            <ion-icon name="book" class="button-icon"></ion-icon>Cancelar
+          </button>    
+        </div>                                                      
+      </ion-card>
+  </ion-list>   
+    
+</ion-content>
+
+<ion-footer>
+  <ion-row>            
+    <ion-col>
+      <button ion-button full text-uppercase (click)="showHistory()" class="btn bg-theme mrg-bt-10 text-white ">
+          <ion-icon name="md-search" style="margin-right: 10px;"></ion-icon> {{dataText.search}}
+      </button>
+    </ion-col>
+    <ion-col>
+      <button ion-button full text-uppercase (click)="clear()" class="btn bg-theme mrg-bt-10 text-white ">
+          <ion-icon name="md-trash" style="margin-right: 10px;"></ion-icon> {{dataText.clear}}
+      </button>
+    </ion-col>       
+  </ion-row>
+</ion-footer>
