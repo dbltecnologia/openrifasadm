@@ -146,10 +146,12 @@ export class HistoryPage implements OnDestroy {
     });
   }
 
+  
   worksCallback(data) {
     this.worksArray = data.map(element => {
       let info = element.payload.val();
       info.key = element.payload.key;
+      info.lastDatetimeStr = moment().format("DD/MM/YYYY hh:mm:ss");
       
       return info;
     });
@@ -170,7 +172,7 @@ export class HistoryPage implements OnDestroy {
   }
 
   changeStatus(work, status){
-    
+
     this.db.updateStatusWork(work, status)
     .then(data => {
       console.log('data', data)

@@ -59,10 +59,9 @@
             <img src="./assets/imgs/default-user.png" *ngIf="! work.photo">
             <img src="{{work.photo}}" *ngIf="work.photo">
           </ion-avatar>
-          <p><b>{{dataText.key}}:</b> {{work.key}} </p>
-          <p><b>{{dataText.clients}}:</b> {{work.name}} </p>
+          <p><b>Nome:</b> {{work.name}} </p>
           <p><b>{{dataText.status}}:</b> {{work.status}} </p>
-          <p *ngIf="work.datetime"><b>{{dataText.dateRequest}}:</b> {{work.datetime}} </p>             
+          <p *ngIf="work.lastDatetimeStr"><b>{{dataText.dateRequest}}:</b> {{work.lastDatetimeStr}} </p>             
           <p *ngIf="work.datatimeCentralIsAware"><b>Horário central ciente:</b> {{work.datatimeCentralIsAware}} </p>
           <p *ngIf="work.datatimeHelpArrived"><b>Horário equipe no local:</b> {{work.datatimeHelpArrived}} </p>          
           <p *ngIf="work.datatimeFinished"><b>Horário finalizado</b> {{work.datatimeFinished}} </p>

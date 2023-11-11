@@ -37,7 +37,7 @@
           <p><b>Usuária:</b> {{work.name}}</p>  
           <p><b>{{dataText.phone}}:</b> {{work.tel}}</p>                    
           <p *ngIf="work.formatted_address"><b>Última localização:</b>{{work.formatted_address}}</p>    
-          <p *ngIf="work.lastDatetime"><b>Visto por último online:</b> {{work.lastDatetime}}</p>        
+          <p *ngIf="work.lastDatetimeStr"><b>Visto por último online:</b> {{work.lastDatetimeStr}}</p>        
           <p *ngIf="work.lastPanic"><b>Último acionamento:</b> {{work.lastPanic}}</p>        
           <p *ngIf="work.latitude"> <b>Latitude:</b> {{work.latitude}}</p>   
           <p *ngIf="work.longitude"><b>Longitude:</b> {{work.longitude}}</p>
