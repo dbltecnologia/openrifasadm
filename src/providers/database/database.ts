@@ -140,5 +140,48 @@ export class DatabaseProvider {
         .snapshotChanges()             
   }
   
+
+    getProdutos() {
+      const path = `/cards/`;
+      return this.db.list(path, 
+        ref => ref.orderByKey())
+        .snapshotChanges()     
+    }
+
+    adicionaProduto(produto){
+      const path = `/cards/`;
+      return this.db.list(path).push(produto)
+    }
+
+
+    atualizaProduto(produto){
+      const path = `/cards/`;
+      return this.db.list(path).update(produto.key, produto)
+    }
+
+    removerProduto(produto){
+      const path = `/cards/`;
+      return this.db.list(path).remove(produto.key)
+    }
+
+
+    getVendas() {
+
+      const path = `/sales/`;
+      return this.db.list(path, 
+        ref => ref.orderByKey())
+        .snapshotChanges()     
+    }
+
+    atualizaVenda(venda){
+      const path = `/sales/`;
+      return this.db.list(path).update(venda.key, venda)
+    }
+
+
+    adicionaSorteio(productKey){
+      const path = `/sorteios/`;
+      return this.db.list(path).push({productKey: productKey, datetime: moment().format()})
+    }
    
   }

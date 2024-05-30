@@ -1,27 +1,11 @@
-page-work-watch {     
-    
-
-
-    .button-container {
-        display: flex;
-        justify-content: flex-end;
-      }
-
-      .button-icon {
-        margin-right: 5px;
-      }
+page-produtos-add {
 
     .bg-theme {	  
         background: $theme-color !important;
     }
 
-        
-    ion-card {
-        position: relative;
-        text-align: center;
-        
-    }
-
+    
+  
     .header {
         &.bg-transparent {
             .toolbar-background {
@@ -101,6 +85,6 @@ page-work-watch {
       }
       
       /* button style */
-         
-     
+      
+
 }

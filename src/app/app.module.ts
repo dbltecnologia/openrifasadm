@@ -5,10 +5,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ClientsPageModule } from '../pages/clients/clients.module';
 
-import { WorkPageModule } from '../pages/work/work.module';
 import { LoginPageModule } from '../pages/login/login.module';
-
-import { WorkWatchPageModule } from '../pages/work-watch/work-watch.module'
 import { HistoryPageModule } from '../pages/history/history.module';
 
 import { StorageProvider } from '../providers/storage/storage';
@@ -35,7 +32,6 @@ import { MessagingService } from '../shared/scripts/messaging.service';
 import { AngularFireMessagingModule } from '@angular/fire/messaging';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
-import { GoogleApiProvider } from '../providers/google-api/google-api';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { IonicStorageModule } from '@ionic/storage';
 import { Ionic2RatingModule } from 'ionic2-rating';
@@ -79,9 +75,7 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   exports: [    
     ClientsPageModule,
-    WorkPageModule,
     LoginPageModule,    
-    WorkWatchPageModule,    
     HistoryPageModule
   ],
 
@@ -101,8 +95,7 @@ export function createTranslateLoader(http: HttpClient) {
     NativeAudio,
     MessagingService, 
     SocialSharing,
-    InAppBrowser,
-    GoogleApiProvider,
+    InAppBrowser,    
     Ionic2RatingModule,
     Geolocation,
     DataTextProvider

@@ -47,10 +47,10 @@ export class HomePage {
 
   startInterface() {
     this.events.publish(this.dataInfo.eventFcmStart, 1);
-    this.getCurrentLocation().subscribe();
+    /*this.getCurrentLocation().subscribe();
     if (this.dataInfo.isDev) {
       this.dev();
-    }
+    }*/
   }
 
   subscribeToFcmToken() {
@@ -73,7 +73,7 @@ export class HomePage {
   }
 
   goPageWorks() {
-    this.navCtrl.push('WorkPage');
+    this.navCtrl.push('ProdutosPage');
   }
 
   goPageSettings() {

@@ -1,17 +1,12 @@
-page-work {
+page-produtos {
+
 
     .bg-theme {	  
         background: $theme-color !important;
     }
 
-        
-    ion-card {
-        position: relative;
-        text-align: center;
-        
-      }
-         
-      
+    
+  
     .header {
         &.bg-transparent {
             .toolbar-background {
@@ -93,8 +88,4 @@ page-work {
       /* button style */
       
 
-
-   .text-black {
-       color: black;
-   }
 }

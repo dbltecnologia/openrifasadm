@@ -1,0 +1,84 @@
+{
+  "cards": {
+    "-Nr2VWx8vEzavpFnjd1i": {
+      "description": "CARRO OU 150 MIL NA CONTA",
+      "image": "https://firebasestorage.googleapis.com/v0/b/antoniofilho-ef6a2.appspot.com/o/Produtos%2F01705631114.jpeg?alt=media&token=cc76f9c4-19f9-4d0d-8872-e74cde22e0b5",
+      "link": "sorteio/index.html",
+      "numberMax": 1000,
+      "numberMin": 1,
+      "promocoes": [
+        {
+          "qtd": 25,
+          "value": 8.66
+        },
+        {
+          "qtd": 50,
+          "value": 17.32
+        },
+        {
+          "qtd": 100,
+          "value": 34.3
+        },
+        {
+          "qtd": 250,
+          "value": 85.7
+        }
+      ],
+      "qtdNCota": 6,
+      "rules": "O resultado será pela a LOTERIA FEDERAL, o ganhador será contemplado pelos algarismos do primeiro prêmio da LOTERIA FEDERAL , adicionando-se ao final o primeiro algarismo do segundo prêmio da LOTERIA FEDERAL.    EXEMPLO.  1º prêmio da loteria federal: 04112  2º prêmio da loteria federal: 12375",
+      "title": "CARRO OU 150 MIL NA CONTA",
+      "totalNumbers": 1000
+    },
+    "-Nr2VWxBesN02MTzmiKm": {
+      "description": "ALÉM DE CONCORRER AO PRÊMIO PRINCIPAL PODE LEVAR OS NÚMEROS PREMIADOS!!",
+      "image": "https://firebasestorage.googleapis.com/v0/b/antoniofilho-ef6a2.appspot.com/o/Produtos%2F01697843796.jpeg?alt=media&token=ddc7e1e9-d200-4545-9cf8-5aebccebb0e7",
+      "link": "sorteio/index.html",
+      "numberMax": 10000,
+      "numberMin": 1,
+      "promocoes": [
+        {
+          "name": "25 POR - R$: 8,66",
+          "qtd": 25,
+          "value": 8.66
+        },
+        {
+          "name": "50 POR - R$: 17.32",
+          "qtd": 50,
+          "value": 17.32
+        },
+        {
+          "name": "100 POR - R$: 34.30",
+          "qtd": 100,
+          "value": 34.3
+        },
+        {
+          "name": "250 POR - R$: 85.75",
+          "qtd": 250,
+          "value": 85.75
+        }
+      ],
+      "qtdNCota": 6,
+      "rules": "O resultado será pela a LOTERIA FEDERAL, o ganhador será contemplado pelos algarismos do primeiro prêmio da LOTERIA FEDERAL , adicionando-se ao final o primeiro algarismo do segundo prêmio da LOTERIA FEDERAL.    EXEMPLO.  1º prêmio da loteria federal: 04112  2º prêmio da loteria federal: 12375",
+      "title": "4.000,00 MIL NA CONTA",
+      "totalNumbers": 10000
+    }
+  },
+  "participants": {
+    "-Nr5nxBUdyUq7DppoqiM": {
+      "name": "Antonio Filho",
+      "phone": "(61) 98301-3768"
+    },
+    "-Nr5nxBWI4aIIDZWXmd1": {
+      "name": "Venâncio Filho",
+      "phone": "(61) 98301-3761"
+    },
+    "-Nr5nxBX4HMG2CEfd5B5": {
+      "name": "Thiago Filho",
+      "phone": "(61) 98301-3766"
+    },
+    "-Nr5nxBX4HMG2CEfd5B6": {
+      "name": "Thiago Martins",
+      "phone": "(61) 98301-3760"
+    }
+  }
+}

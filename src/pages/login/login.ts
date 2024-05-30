@@ -34,7 +34,7 @@ export class LoginPage {
     public dataText: DataTextProvider,
     public db: DatabaseProvider) {
     
-      this.startInterface() 
+      
 
   }
 
@@ -42,7 +42,6 @@ export class LoginPage {
     var self = this  
     
     this.autoLogin = this.navParams.get("autoLogin")
-    
 
     if(this.autoLogin == undefined)
       this.autoLogin = true      
@@ -54,146 +53,45 @@ export class LoginPage {
         if(user)
           self.goHome()
       });                  
-    }
+    }        
 
-    
-
-    // this.loginDev()
+    this.startInterface() 
         
   }  
 
   loginDev(){          
     
-    this.username = "cliente@gmail.com"    
-    this.password = "123456"    
-    //this.dataInfo.isHome= true
+    this.username = "admin@rifasfacil.com.br"    
+    this.password = "1020304050607980brasil"
+
     this.loginUser()    
+
   }
   
   goHome(){    
-    this.userConfig = this.db.getUser().subscribe(data => {       
-      
-      
-      this.goPageHomeUserContinue(data)            
-        this.userConfig.unsubscribe()
-    })
-
-
-  }
-
-  goPageHomeUserContinue(data){  
-
-    data.forEach(element => {               
-      this.dataInfo.userInfo = element.payload.val()
-      this.dataInfo.userType = element.payload.val().userType
-      
-      
-    });
-
-
-    if(this.dataInfo.userInfo){
-
-      if(!this.dataInfo.userInfo.ifoodClientId)
-        this.dataInfo.userInfo.ifoodClientId = "b37ac194-2522-4c0f-8179-2de0da16a327"
-
-      if(!this.dataInfo.userInfo.ifoodClientSecret)
-        this.dataInfo.userInfo.ifoodClientSecret = "4rxsb2ud4q2tuepr00tydl6k5x2mzok3p8lzirkj9qcck8koj9nuhpps9lmyj1syfjp69vd9igmqqykc894nm8pdgp7cu8dezdw"
-
-    console.log(this.dataInfo.userInfo.ifoodClientId, this.dataInfo.userInfo.ifoodClientSecret)
-
+    if(this.dataInfo.isHome){
+      return
     }
+
+    this.dataInfo.isHome = true
+    this.navCtrl.setRoot(HomePage);      
     
-      
-    this.getConfigurations() 
-    
-  }
-
-  getConfigurations(){
-    
-    let sub = this.db.getAllSettings()  
-    .subscribe(data => {
-
-
-      this.getCallback(sub, data)
-      
-    })
-  }
-
-  getCallback(sub, data){
-
-    data.forEach(element => {
-      this.dataInfo.appConfig = element.payload.val()
-      this.dataInfo.appConfig.key = element.payload.key      
-      
-    })
-
-  
-    sub.unsubscribe()
-    this.goPageHome()   
-
-  }
-
-
-  goPageHome(){
- 
-    
-    if(! this.dataInfo.isHome){
-
-      if(this.dataInfo.userInfo){
-        this.storage.set('default-state', this.dataInfo.defaultState)
-
-        .then(() => {
-          console.log('Default state salvo com sucesso!!')              
-        })
-    
-        
-
-        this.dataInfo.isHome = true
-      
-        if(this.dataInfo.userInfo && this.dataInfo.userInfo.isAdmin)
-          this.navCtrl.setRoot(HomePage);          
-        
-        else if(this.dataInfo.userInfo && this.dataInfo.userInfo.manager){
-
-          if(this.dataInfo.userInfo.managerRegion){
-            this.navCtrl.setRoot(HomePage);        
-          }
-        
-      }
-
-      else {
-        this.navCtrl.setRoot("WorkPage");          
-
-      }
-
-
-      ///  this.goPageDev()
-
-    }
-      
-    
-    else 
-      this.uiUtils.showAlertError("Usuário não localizado ou senha incorreta")
-
-      
-    }
-        
-      
-
+    this.goPageDev()
   }  
-
 
   
   goPageDev(){
             
-    setTimeout(() => {  
-                         
+    setTimeout(() => {                           
       // this.navCtrl.setRoot('RegionsPage');
-
     }, 1000);
   }
 
   startInterface(){    
+
+    console.log('startInterface')
+
+    this.loginDev()
     
     this.storage.get('default-state')
 
@@ -209,11 +107,16 @@ export class LoginPage {
 
   loginUser(): void {        
 
+    console.log('Login user ' + this.username + ' pass ' + this.password)
+
+
     if (! this.username || this.username.length < 6){
       this.uiUtils.showAlert(this.dataText.warning, this.dataInfo.titleUsernameMinLenght).present()
 
     } else if (! this.password || this.password.length < 6){
       this.uiUtils.showAlert(this.dataText.warning, this.dataInfo.titlePasswordMinLenght).present()
+
+
       
     } else {
       this.loginContinue(this.username.trim(), this.password.trim())
@@ -221,6 +124,8 @@ export class LoginPage {
   }
 
   loginContinue(email, pass){
+
+    console.log('Login user ' + email + ' pass ' + pass)
     
     let loading = this.uiUtils.showLoading(this.dataInfo.pleaseWait)    
     loading.present() 
@@ -233,7 +138,10 @@ export class LoginPage {
       loading.dismiss();
       self.goHome()
 
+
     }, error => {
+      console.log('Error login ' + error)
+      
       loading.dismiss().then( () => {
         self.uiUtils.showAlert(this.dataText.warning, this.dataInfo.titleAuthError).present()
       });
