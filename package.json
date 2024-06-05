@@ -101,7 +101,12 @@
   "devDependencies": {
     "@ionic/app-scripts": "3.2.3",
     "@types/node": "^20.12.13",
-    "typescript": "^2.8.0"
+    "typescript": "^2.8.0",
+    "cordova-plugin-youtube-video-player": "^1.0.6",
+    "cordova-plugin-x-socialsharing": "^5.4.1",
+    "cordova-plugin-geolocation": "^4.0.1",
+    "cordova-plugin-facebook4": "^2.5.0",
+    "cordova-plugin-googlemaps": "^2.4.6"
   },
   "description": "An Ionic project",
   "cordova": {
@@ -120,7 +125,22 @@
       "cordova-plugin-firebase": {},
       "cordova-plugin-fcm": {},
       "cordova-plugin-statusbar": {},
-      "cordova-plugin-nativeaudio": {}
+      "cordova-plugin-nativeaudio": {},
+      "cordova-plugin-youtube-video-player": {},
+      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-geolocation": {
+        "GEOLOCATION_USAGE_DESCRIPTION": "To locate you"
+      },
+      "cordova-plugin-facebook4": {
+        "APP_ID": "138123440388740",
+        "APP_NAME": "Restaurante App",
+        "ANDROID_SDK_VERSION": "4.+",
+        "FACEBOOK_ANDROID_SDK_VERSION": "4.+"
+      },
+      "cordova-plugin-googlemaps": {
+        "API_KEY_FOR_ANDROID": "AIzaSyCeMH0A9D1Sqsi1PfMRSWPcAqv-0KMd7RM",
+        "API_KEY_FOR_IOS": "AIzaSyCeMH0A9D1Sqsi1PfMRSWPcAqv-0KMd7RM"
+      }
     },
     "platforms": [
       "browser"

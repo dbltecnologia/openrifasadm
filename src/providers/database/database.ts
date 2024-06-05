@@ -181,7 +181,18 @@ export class DatabaseProvider {
 
     adicionaSorteio(productKey){
       const path = `/sorteios/`;
-      return this.db.list(path).push({productKey: productKey, datetime: moment().format()})
+      return this.db.list(path).push({productKey: productKey, datetime: moment().format()}).key
     }
-   
+    
+    getSorteioKey(key){
+      const path = `/sorteios/`;
+
+      return this.db.list(path, 
+        ref => ref.orderByKey()
+        .equalTo(key))
+
+
+        .snapshotChanges()   
+    }
+
   }

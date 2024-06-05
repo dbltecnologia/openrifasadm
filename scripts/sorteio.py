@@ -26,10 +26,10 @@ class FirebaseDatabase:
         self.ref.child(path).update(data)
 
 
-def perform_sorteio(firebase_db, productKey):
+def perform_sorteio(firebase_db, productKey, sorteioKey):
                 
     sales = firebase_db.read_data('sales')
-    
+                
     # List to store all numbers
     all_numbers = []
     quantidade_numeros_cotas = 6
@@ -39,27 +39,41 @@ def perform_sorteio(firebase_db, productKey):
         if sale['productKey'] != productKey:
             continue            
         quantidade_numeros_cotas = sale['qtdNCota']
-        cotas = sale['cotas'].split(', ')
-        all_numbers.extend(cotas)
+        if 'cotas' in sale:
+            cotas = sale['cotas'].split(', ')
+            all_numbers.extend(cotas)
+            
+        
 
     # Convert numbers to integers
     all_numbers = list(map(int, all_numbers))
+    firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': f'Quantidade de números por cota: {quantidade_numeros_cotas}', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
 
     # Perform the weighted draw
     winner_number = random.choice(all_numbers)
     winner_name = ''
     
     print(f"O número vencedor é {winner_number}.")
+    firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': f'O número vencedor é {winner_number}.', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
 
     # Find the winner's CPF
     for sale in sales.values():
-        
-            # Check if 'status' key exists in the sale
+                                   
         if 'status' in sale:
             print('Ignoring sale with status:', sale['status'])
             continue
     
-        cotas = list(map(int, sale['cotas'].split(', ')))
+        if sale['productKey'] != productKey:
+            continue
+        
+        if 'cotas' not in sale:
+            continue
+        
+        
+        cotas = list(map(int, sale['cotas'].split(', ')))                
+        
+        print(f"Venda de {sale['name']} tem os números: {cotas}")
+        firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': f"Venda de {sale['name']} tem os números: {cotas}", 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
         
         if winner_number in cotas:
             winner_cpf = sale['cpf']
@@ -69,7 +83,11 @@ def perform_sorteio(firebase_db, productKey):
     # Check if a winner was found
     if not winner_name:
         print("Não foi possível encontrar um vencedor.")
+        firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': 'Não foi possível encontrar um vencedor.', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
         return
+    else:
+        print("Vencedor encontrado!")
+        firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': 'Vencedor encontrado!', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
 
     # Check how many shares of this product the user has purchased
     user_cotas = cotas.count(winner_number)
@@ -79,6 +97,8 @@ def perform_sorteio(firebase_db, productKey):
 
     print(f"O número vencedor é {winner_number}, ganhador: {winner_name} pertencente ao CPF {winner_cpf}.")
     print(f"O usuário comprou {user_cotas} cotas desse produto.")
+    
+    firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': f"O número vencedor é {winner_number}, ganhador: {winner_name} pertencente ao CPF {winner_cpf}.", 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
 
     # Get the current date and time
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -124,7 +144,7 @@ def main():
         
         if sorteios is None:
             print("No sorteios found.")
-            time.sleep(60)  # Wait for 1 minute before performing the next sorteio
+            time.sleep(10)  # Wait for 1 minute before performing the next sorteio
             continue
         
         print("Performing sorteio...")
@@ -133,16 +153,18 @@ def main():
         for key, sorteio in sorteios.items():
             
             if 'status' not in sorteio:
-                print(f"Performing sorteio for product key: {key}")
-                print(sorteio)
+                # firebase_db.update_data(f'sorteios/{key}', {'status': 'Em andamento'})
+                firebase_db.write_data('sorteios_logs/'+key, {'msg': 'Sorteio iniciado', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
                 
-                winner = perform_sorteio(firebase_db, sorteio.get('productKey'))                
-                firebase_db.update_data(f'sorteios/{key}', {'status': 'Finalizado', 'winner': winner})
+                winner = perform_sorteio(firebase_db, sorteio.get('productKey'), key)      
+                                
+                firebase_db.update_data('sorteios/'+key, {'msg': 'Sorteio finalizado', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'status': 'Finalizado', 'winner': winner})
+                firebase_db.write_data('sorteios_logs/'+key, {'msg': 'Sorteio finalizado', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'winner': winner})
                 
                 break
         
-        print("Waiting for 1 minute before performing the next sorteio...")
-        time.sleep(60)  # Wait for 1 minute before performing the next sorteio
+        print("Waiting for 10 seconds  before performing the next sorteio...")
+        time.sleep(10)  
 
 
 if __name__ == "__main__":

@@ -1,0 +1,125 @@
+page-sorteios {
+
+    .bg-theme {	  
+        background: $theme-color !important;
+    }
+
+    
+  
+    .header {
+        &.bg-transparent {
+            .toolbar-background {
+                background: transparent !important;
+            }
+        }
+      
+        &::after {
+            display: none;
+        }
+      
+        .toolbar {
+            .toolbar-background {
+                background-color: $theme-color;
+                border: none !important;
+            }
+      
+            .title {
+                .toolbar-title {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    color: $white;
+                    display: flex;
+                    align-items: center;
+                    letter-spacing: .5px !important;
+                    text-transform: uppercase;
+      
+                    ion-icon {
+                        font-size: 2.2rem;
+                    }
+                }
+      
+                .end {
+                    margin-left: auto !important;
+      
+                }
+            }
+            
+        }
+      
+        .bar-buttons {
+            color: $white;
+            z-index: 999;
+        }
+      
+        .back-button {
+            color: $white;
+            z-index: 999;
+      
+            //        .ion-md-arrow-back:before {
+            //            content: "\f3cf";
+            //        }
+        }
+      
+        .toolbar-ios {
+            ion-title {
+                padding: 0 16px;
+                position: unset;
+      
+                .toolbar-title-ios {
+                    text-align: justify;
+                }
+            }
+      
+            .bar-buttons-ios {
+                color: $white;
+            }
+      
+            .back-button-text {
+                display: none;
+            }
+        }
+      
+        .bar-button-default:hover:not(.disable-hover) {
+            color: lighten($gray, 100%);
+        }
+      }
+      
+      /* button style */
+
+      .number-modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        text-align: center;
+        font-size: 2em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .number-modal-content {
+        display: flex;
+        gap: 10px;
+      }
+      
+      .number-text, .winner-text {
+        display: none;
+        margin: 0 5px;
+        font-size: 2em;
+      }
+      
+      .winner-text {
+        font-weight: bold;
+        font-size: 3em;
+        color: gold;
+      }
+      
+      
+
+
+}

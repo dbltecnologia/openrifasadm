@@ -94,6 +94,9 @@ export class ProdutosAddPage {
       rules: ['',[Validators.required]],
       title: ['',[Validators.required]],
       totalNumbers: ['',[Validators.required]],
+      
+      valuePrices: [0.35,[Validators.required]],
+
       promocoes: this.formBuilder.array([
         { qtd: 25, value: 8.66 },
         { qtd: 50, value: 17.32 },
@@ -111,6 +114,7 @@ export class ProdutosAddPage {
 
   loginInfoUser(){
     
+    
     let payload = this.payload   
 
 
@@ -127,12 +131,14 @@ export class ProdutosAddPage {
       qtdNCota: payload.qtdNCota,
       rules: payload.rules,
       title: payload.title,
+      valuePrices: payload.valuePrices,
       totalNumbers: payload.totalNumbers
     })    
 
     this.base64Image = payload.image      
        
   }
+  
  
   save(){
 
@@ -305,6 +311,8 @@ export class ProdutosAddPage {
       title: this.formGroup.value.title,
       totalNumbers: this.formGroup.value.totalNumbers,
       promocoes: this.formGroup.value.promocoes,
+
+      valuePrices: this.formGroup.value.valuePrices,
       key: this.payload.key
       
     }
@@ -335,6 +343,8 @@ export class ProdutosAddPage {
       rules: this.formGroup.value.rules,
       title: this.formGroup.value.title,
       totalNumbers: this.formGroup.value.totalNumbers,
+
+      valuePrices: this.formGroup.value.valuePrices,
       promocoes: this.formGroup.value.promocoes
     }
 

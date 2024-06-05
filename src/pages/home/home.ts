@@ -68,16 +68,16 @@ export class HomePage {
     this.navCtrl.push('ClientsPage');
   }
 
-  goPagProfessionals() {
-    this.navCtrl.push('ProfessionalsPage');
+  goPageVendas() {
+    this.navCtrl.push('RelatoriosPage');
   }
 
   goPageWorks() {
     this.navCtrl.push('ProdutosPage');
   }
 
-  goPageSettings() {
-    this.navCtrl.push('SettingsPage');
+  goPageSorteios() {
+    this.navCtrl.push('SorteiosPage');
   }
 
   logout() {
@@ -134,4 +134,6 @@ export class HomePage {
   suporte() {
     window.open(this.dataInfo.appConfig.appHelp, '_blank');
   }
+
+
 }

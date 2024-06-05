@@ -1,0 +1,96 @@
+<ion-header>
+  <ion-navbar text-center no-border-bottom>
+    <ion-title>Vendas</ion-title>                   
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="trips detail-bg">
+  <ion-list>
+    <!--<ion-item no-lines>
+      <ion-label stacked>{{dataText.order}}</ion-label>  
+      <ion-select [(ngModel)]="orderType" (ionChange)="reload()">            
+        <ion-option value="1">{{dataText.order1}}</ion-option>
+        <ion-option value="2">{{dataText.order2}}</ion-option>
+        <ion-option value="3">{{dataText.order3}}</ion-option>
+        <ion-option value="4">{{dataText.order4}}</ion-option>
+      </ion-select>                          
+    </ion-item>-->
+
+   <!-- <ion-item no-lines>
+      <ion-label stacked>Procurar</ion-label>
+      <ionic-selectable item-content [(ngModel)]="client" [items]="usersArray" itemValueField="name" itemTextField="name" [canSearch]="true" (onChange)="clientChanged($event)">
+      </ionic-selectable>
+    </ion-item> -->
+
+    <ion-card class="trip card" text-wrap *ngFor="let worker of usersArray" no-lines>
+
+     <ion-card-header>
+        <ion-item >
+          <ion-avatar item-start>
+            <img src="./assets/imgs/default-user.png" *ngIf="! worker.image">
+            <img [src]="worker.image" *ngIf="worker.image">
+          </ion-avatar>
+          <h2>{{worker.productName}}</h2>       
+        </ion-item>    
+     </ion-card-header>
+
+      <ion-card-content>
+
+        <ion-list text-wrap lines="none"> 
+          
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>Descrição</ion-label>                        
+            <ion-label>{{worker.productDescription}}</ion-label>            
+          </ion-item>                     
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>Comprado por</ion-label>                        
+            <ion-label>{{worker.name}}</ion-label>            
+          </ion-item>    
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>CPF</ion-label>                        
+            <ion-label>{{worker.cpf}}</ion-label>            
+          </ion-item>    
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>Telefone</ion-label>                        
+            <ion-label>{{worker.telephone}}</ion-label>            
+          </ion-item>    
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>Valor final</ion-label>                        
+            <ion-label>{{worker.totalAmount}}</ion-label>            
+          </ion-item>    
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>Quantidade de cotas adquiridas</ion-label>                        
+            <ion-label>{{worker.quantity}}</ion-label>            
+          </ion-item>   
+
+          
+          <ion-item no-lines text-wrap *ngIf="worker._token">
+            <ion-label stacked>Token de identificação MP</ion-label>                        
+            <ion-label>{{worker._token}}</ion-label>            
+          </ion-item>   
+
+
+          <ion-item no-lines text-wrap>
+            <ion-label stacked>Cotas</ion-label>                                    
+          </ion-item>
+
+          <ion-item no-lines text-wrap>                             
+            <ion-label>{{worker.cotas}}</ion-label>            
+          </ion-item>   
+
+          
+
+
+        </ion-list>
+
+      </ion-card-content>
+               
+    </ion-card>
+  </ion-list>
+</ion-content>

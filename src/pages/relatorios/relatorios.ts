@@ -11,12 +11,13 @@ import { AuthProvider } from '../../providers/auth/auth';
 import { HttpdProvider } from '../../providers/httpd/httpd';
 import { DataTextProvider } from '../../providers/data-text/data-text';
 
+
 @IonicPage()
 @Component({
-  selector: 'page-produtos',
-  templateUrl: 'produtos.html',
+  selector: 'page-relatorios',
+  templateUrl: 'relatorios.html',
 })
-export class ProdutosPage {
+export class RelatoriosPage {
 
   usersWorkers: Observable<any>;
   usersArray: any[] = [];
@@ -51,7 +52,7 @@ export class ProdutosPage {
     
     const loading = this.uiUtils.showLoading(this.dataInfo.titleLoadingInformations);
     loading.present();
-    this.usersWorkers = this.db.getProdutos();
+    this.usersWorkers = this.db.getVendas();
     const sub = this.usersWorkers.subscribe(data => {
       sub.unsubscribe();
       this.processUserData(data);
@@ -60,11 +61,21 @@ export class ProdutosPage {
   }
 
   processUserData(data) {
+
+
+
     this.usersArray = [];
     data.forEach(element => {
+
       const info = element.payload.val();
+
+      console.log(info)
+
       info.key = element.payload.key;
-      info.lastDatetimeStr = moment(info.lastDatetime).format("DD/MM/YYYY hh:mm:ss");
+      info.lastDatetimeStr = element.payload.orderDateTime
+      info.totalNumeros = element.payload.quantity * element.payload.qtdNCota
+
+
       this.usersArray.push(info);
     });
     this.checkOrder();
@@ -287,14 +298,14 @@ export class ProdutosPage {
       loading.dismiss()
       this.uiUtils.showToast(this.dataText.success)
       this.reload()
-    })
-                     
-    
+    })                         
   }
+
 
   clientChanged(event){
     this.reload()
 
   } 
-         
+
+
 }
