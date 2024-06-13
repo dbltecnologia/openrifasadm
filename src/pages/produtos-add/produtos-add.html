@@ -6,40 +6,49 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>  
+<ion-content no-lines>  
 
-    <ion-list> 
+    <ion-list no-lines  style="border: 0px;"> 
 
-      <ion-item no-lines class="ion-align-items-center">
-        <ion-label stacked>Imagem</ion-label>
-        <ion-img [src]="base64Image"></ion-img>
+        <ion-item no-lines class="ion-align-items-center" *ngIf="payload">        
+          <img [src]="payload.image" style="width: 100px; height: 100px; display: block; margin: 0 auto;" />                        
+        </ion-item>      
+
+      <ion-item no-lines class="ion-align-items-center" *ngIf="base64image">        
+        <img src="base64image" style="width: 100%; height: 100%;" />                        
       </ion-item>
             
       <form [formGroup]="formGroup" class="pagseguro" no-padding>
 
 
-        <ion-item no-lines><ion-label stacked>Data e Hora</ion-label><ion-input type="text" formControlName="datetime"></ion-input></ion-item>        
-        <ion-item no-lines><ion-label stacked>Título</ion-label><ion-input type="text" formControlName="title"></ion-input></ion-item>        
+        <ion-item no-lines style="border: 0px;">
+          <ion-label stacked>Sorteio</ion-label>
+          <ion-datetime displayFormat="DD/MM/YYYY HH:mm" formControlName="datetime"></ion-datetime>          
+        </ion-item>      
+
+        <ion-item no-lines  style="border: 0px;">
+          
+          <ion-label stacked>Título</ion-label>
+          <ion-input type="text" formControlName="title"></ion-input>
+        </ion-item>        
         <ion-item no-lines><ion-label stacked>Descrição</ion-label><ion-input type="text" formControlName="description"></ion-input></ion-item>        
         <ion-item no-lines><ion-label stacked>Número Máximo</ion-label><ion-input type="number" formControlName="numberMax"></ion-input></ion-item>        
         <ion-item no-lines><ion-label stacked>Número Mínimo</ion-label><ion-input type="number" formControlName="numberMin"></ion-input></ion-item>        
         <ion-item no-lines><ion-label stacked>Quantidade de Cotas</ion-label><ion-input type="number" formControlName="qtdNCota"></ion-input></ion-item>        
-        <ion-item no-lines><ion-label stacked>Regras</ion-label><ion-input type="text" formControlName="rules"></ion-input></ion-item>        
-        <ion-item no-lines><ion-label stacked>Total de Números</ion-label><ion-input type="number" formControlName="totalNumbers"></ion-input></ion-item>
+        <ion-item no-lines><ion-label stacked>Regras</ion-label><ion-input type="text" formControlName="rules"></ion-input></ion-item>                
         <ion-item no-lines><ion-label stacked>Valor de cada cota</ion-label><ion-input type="text" formControlName="valuePrices"></ion-input></ion-item>        
         
-        <ion-item no-lines *ngFor="let promocao of promocoes">
+        <ion-item no-lines *ngFor="let promocao of promocoes"  style="border: 0px;">
           <ion-label stacked>Promoções</ion-label>
           <ion-input type="number" formControlName="qtd" [value]="promocao.qtd"></ion-input>
           <ion-input type="number" formControlName="value" [value]="promocao.value"></ion-input>
         </ion-item>
-        
-      </form>    
-      
+
+      </form>          
     </ion-list>  
 
-
 </ion-content>
+
 <ion-footer>  
   <button ion-button block class="btn bg-theme mrg-bt-10 text-white" (click)="getPictureFile()">Foto principal</button>
   <button ion-button block class="btn bg-theme mrg-bt-10 text-white" (click)="addnew()" *ngIf="! payload">{{dataText.add}}</button>

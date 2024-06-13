@@ -84,16 +84,14 @@ export class ProdutosAddPage {
  
   initForm() {    
     this.formGroup = this.formBuilder.group({   
-      datetime: [{value: moment().format(), disabled: true}, [Validators.required]],
+      datetime: [{value: moment().format()}, [Validators.required]],
       description: ['',[Validators.required]],
       image: ['',[Validators.required]],
-      link: ['',[Validators.required]],
       numberMax: ['',[Validators.required]],
       numberMin: ['',[Validators.required]],
       qtdNCota: ['',[Validators.required]],
       rules: ['',[Validators.required]],
       title: ['',[Validators.required]],
-      totalNumbers: ['',[Validators.required]],
       
       valuePrices: [0.35,[Validators.required]],
 
@@ -115,7 +113,7 @@ export class ProdutosAddPage {
   loginInfoUser(){
     
     
-    let payload = this.payload   
+    let payload = this.payload
 
 
     console.log('Carregando dados de um produto já existente', payload)
@@ -131,11 +129,14 @@ export class ProdutosAddPage {
       qtdNCota: payload.qtdNCota,
       rules: payload.rules,
       title: payload.title,
-      valuePrices: payload.valuePrices,
-      totalNumbers: payload.totalNumbers
+      valuePrices: payload.valuePrices      
     })    
 
     this.base64Image = payload.image      
+
+    console.log('Formulário carregado', this.formGroup.value)
+    console.log(this.base64Image)
+
        
   }
   
@@ -181,8 +182,6 @@ export class ProdutosAddPage {
         reject("Favor informar a quantidade de cotas");
       } else if(!this.formGroup.value.rules) {
         reject("Favor informar as regras");
-      } else if(!this.formGroup.value.totalNumbers) {
-        reject("Favor informar o total de números");
       }
 
       if (!this.base64Image) { reject("Favor adicionar uma imagem"); }
@@ -229,24 +228,21 @@ export class ProdutosAddPage {
 
 
   getPictureFile() {
-    if (this.platform.is('desktop') || this.platform.is('mobileweb')) {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = 'image/*';
-      fileInput.addEventListener('change', (event) => {
-        const file = (event.target as HTMLInputElement).files[0]; // Cast event.target to HTMLInputElement
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          this.base64Image = reader.result as string;
-          this.photoChanged = true
+    
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.addEventListener('change', (event) => {
+      const file = (event.target as HTMLInputElement).files[0]; // Cast event.target to HTMLInputElement
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        this.base64Image = reader.result as string;
+        this.photoChanged = true
 
-        };
-        reader.readAsDataURL(file);
-      });
-      fileInput.click();
-    } else {
-      // Handle picture selection for other platforms (e.g. mobile devices)
-    }
+      };
+      reader.readAsDataURL(file);
+    });
+    fileInput.click();
   }
 
   uploadWithPic(){    
@@ -300,18 +296,18 @@ export class ProdutosAddPage {
     this.defaultValues()
 
     const produto = {
-      datetime: moment().format(),
+      datetimeUpdated: moment().format(),
+      datetime: this.formGroup.value.datetime,
       description: this.formGroup.value.description,
       image: url,
-      link: this.formGroup.value.link,
+      link: "sorteio/index.html",
       numberMax: this.formGroup.value.numberMax,
       numberMin: this.formGroup.value.numberMin,
       qtdNCota: this.formGroup.value.qtdNCota,
       rules: this.formGroup.value.rules,
-      title: this.formGroup.value.title,
-      totalNumbers: this.formGroup.value.totalNumbers,
+      title: this.formGroup.value.title,      
       promocoes: this.formGroup.value.promocoes,
-
+      type: this.dataInfo.appType,      
       valuePrices: this.formGroup.value.valuePrices,
       key: this.payload.key
       
@@ -332,22 +328,24 @@ export class ProdutosAddPage {
 
   addContinue(url: string){
 
+
     const produto = {
-      datetime: moment().format(),
+      datetime: this.formGroup.value.datetime,      
       description: this.formGroup.value.description,
       image: url,
-      link: this.formGroup.value.link,
+      link: "sorteio/index.html",
       numberMax: this.formGroup.value.numberMax,
       numberMin: this.formGroup.value.numberMin,
       qtdNCota: this.formGroup.value.qtdNCota,
       rules: this.formGroup.value.rules,
       title: this.formGroup.value.title,
-      totalNumbers: this.formGroup.value.totalNumbers,
-
+      totalNumbers: this.formGroup.value.numberMax - this.formGroup.value.numberMin + 1,
+      
+      datetimeUpdated: moment().format(),
       valuePrices: this.formGroup.value.valuePrices,
-      promocoes: this.formGroup.value.promocoes
+      promocoes: this.formGroup.value.promocoes,
+      type: this.dataInfo.appType 
     }
-
 
     console.log('Adicionando ', produto)
 
@@ -365,7 +363,6 @@ export class ProdutosAddPage {
 
   defaultValues(){
     
-
   }
 
   selectPicture(){

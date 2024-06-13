@@ -6,9 +6,10 @@ import * as moment from 'moment-timezone';
 export class DataInfoProvider {  
 
   
-  // CONFIGURAÇÕES DO APP  
-  appName: string = "Rifas Fácil Admin"
-   
+
+  appName: string = "Bingo Fácil Admin"
+  appType: number = 1    // 0 - Rifa 1 - Bingo
+
   appVersion: string = ""   
   appIsActive: Boolean = true
   appConfig: any 
@@ -17,8 +18,8 @@ export class DataInfoProvider {
   appCreditWorkValue: number = 1  
   userTotalCreditsRun: number = 0
 
-    urlFirebase: string = ""
-appCreditUseTotalValue:Boolean = true
+  urlFirebase: string = ""
+  appCreditUseTotalValue:Boolean = true
   defaultState: string = 'DF'
   defaultCity: string = '' 
 

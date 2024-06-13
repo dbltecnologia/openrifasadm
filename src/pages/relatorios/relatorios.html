@@ -24,6 +24,7 @@
 
     <ion-card class="trip card" text-wrap *ngFor="let worker of usersArray" no-lines>
 
+      
      <ion-card-header>
         <ion-item >
           <ion-avatar item-start>
@@ -42,7 +43,15 @@
           <ion-item no-lines text-wrap>
             <ion-label stacked>Descrição</ion-label>                        
             <ion-label>{{worker.productDescription}}</ion-label>            
-          </ion-item>                     
+          </ion-item>                   
+
+          <ion-item no-lines text-wrap *ngIf="worker.datetimeStr">
+            <ion-label stacked>Horário compra</ion-label>                        
+            <ion-label>{{worker.datetimeStr}}</ion-label>            
+          </ion-item>                   
+          
+          
+
 
           <ion-item no-lines text-wrap>
             <ion-label stacked>Comprado por</ion-label>                        

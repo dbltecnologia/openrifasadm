@@ -1,8 +1,12 @@
 
 export const firebaseConfig = {     
   apiKey: "AIzaSyBvYdKJIQjkqToxJVVwbOo7WG7pN7PCacE",
+
+
+
+  
   authDomain: "antoniofilho-ef6a2.firebaseapp.com",
-  databaseURL: "https://antoniofilho-ef6a2-default-rtdb.firebaseio.com",
+  databaseURL: "https://antoniofilho-ef6a2-default-rtdb.firebaseio.com/",
   projectId: "antoniofilho-ef6a2",
   storageBucket: "antoniofilho-ef6a2.appspot.com",
   messagingSenderId: "637424531884",

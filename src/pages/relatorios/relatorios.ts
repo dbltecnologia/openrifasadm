@@ -47,6 +47,7 @@ export class RelatoriosPage {
     }
   }
 
+
   reload() {
     console.log('reload')
     
@@ -56,6 +57,9 @@ export class RelatoriosPage {
     const sub = this.usersWorkers.subscribe(data => {
       sub.unsubscribe();
       this.processUserData(data);
+
+      this.usersArray.sort((a, b) => new Date(b.datetime).getTime() - new Date(a.datetime).getTime());
+
       loading.dismiss();
     });
   }
@@ -69,16 +73,22 @@ export class RelatoriosPage {
 
       const info = element.payload.val();
 
-      console.log(info)
-
       info.key = element.payload.key;
       info.lastDatetimeStr = element.payload.orderDateTime
       info.totalNumeros = element.payload.quantity * element.payload.qtdNCota
+      info.datetimeStr = moment(info.datetime).format('DD/MM/YYYY HH:mm')
 
-
-      this.usersArray.push(info);
+      if(info.type === this.dataInfo.appType){
+        this.usersArray.push(info);
+      }
+      
+      
     });
-    this.checkOrder();
+
+
+
+    
+
   }
 
   
@@ -103,7 +113,7 @@ export class RelatoriosPage {
   }
 
   orderByProperty(property, desc = false) {
-    // this.usersArray.sort((a, b) => desc ? b[property].localeCompare(a[property]) : a[property].localeCompare(b[property]));
+    this.usersArray.sort((a, b) => desc ? b[property].localeCompare(a[property]) : a[property].localeCompare(b[property]));
   }
 
   orderAlpha(){
@@ -136,13 +146,19 @@ export class RelatoriosPage {
 
   orderDatetime(){
 
-    let tmp = this.usersArray.sort(function(a,b) {
+    
 
-      if(a.datetime < b.datetime) { return -1; }
-      if(a.datetime > b.datetime) { return 1; }
+
+
+    let tmp = this.usersArray.sort(function(a, b) {
+      if (new Date(a.datetime).toISOString() < new Date(b.datetime).toISOString()) {
+        return -1;
+      }
+      if (new Date(a.datetime).toISOString() > new Date(b.datetime).toISOString()) {
+        return 1;
+      }
       return 0;
-
-    })    
+    });
 
 
     this.usersArray = tmp

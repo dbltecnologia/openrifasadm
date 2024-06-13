@@ -40,21 +40,29 @@
 
       <ion-card-content>
 
-        <ion-list text-wrap lines="none"> 
+        <ion-list text-wrap no-lines> 
           
           <ion-item no-lines text-wrap>
             <ion-label stacked>Descrição</ion-label>                        
             <ion-label>{{worker.description}}</ion-label>            
           </ion-item>                  
 
-          <ion-item no-lines  *ngIf="worker.status && worker.winner" style="border: 1px solid green; border-radius: 5px;">
-            <ion-label>Vencedor: {{worker.winner.name}} - CPF {{worker.winner.cpf}}</ion-label>
-            <ion-label>Horário sorteio: {{worker.winner.time | date:'dd/MM/yyyy HH:mm'}}</ion-label>            
+          <ion-item no-lines  *ngIf="worker.status && worker.winner" style="border: 0px;">
+            <ion-label>Vencedor: {{worker.winner.name}} </ion-label>
+          </ion-item>        
+
+          <ion-item no-lines  *ngIf="worker.status && worker.winner" style="border: 0px;">            
+            <ion-label>CPF: {{worker.winner.cpf}}</ion-label>           
+          </ion-item>        
+
+          <ion-item no-lines  *ngIf="worker.status && worker.winner" style="border: 0px;">
+            <ion-label>Sorteio: {{worker.winner.time | date:'dd/MM/yyyy HH:mm'}}</ion-label>
           </ion-item>        
 
         </ion-list>
 
       </ion-card-content>
+      
             
       <ion-row padding>              
         <ion-col>

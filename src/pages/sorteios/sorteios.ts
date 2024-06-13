@@ -67,7 +67,12 @@ export class SorteiosPage {
       const info = element.payload.val();
       info.key = element.payload.key;
       info.lastDatetimeStr = moment(info.lastDatetime).format("DD/MM/YYYY hh:mm:ss");
-      this.usersArray.push(info);
+
+      if(info.type === this.dataInfo.appType){
+        this.usersArray.push(info);
+          
+      }
+      
     });
     this.checkOrder();
   }
