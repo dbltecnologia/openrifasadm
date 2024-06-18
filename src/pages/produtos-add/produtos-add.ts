@@ -301,14 +301,14 @@ export class ProdutosAddPage {
       description: this.formGroup.value.description,
       image: url,
       link: "sorteio/index.html",
-      numberMax: this.formGroup.value.numberMax,
-      numberMin: this.formGroup.value.numberMin,
-      qtdNCota: this.formGroup.value.qtdNCota,
+      numberMax: Number(this.formGroup.value.numberMax),
+      numberMin: Number(this.formGroup.value.numberMin),
+      qtdNCota: Number(this.formGroup.value.qtdNCota),
       rules: this.formGroup.value.rules,
       title: this.formGroup.value.title,      
       promocoes: this.formGroup.value.promocoes,
       type: this.dataInfo.appType,      
-      valuePrices: this.formGroup.value.valuePrices,
+      valuePrices: String(this.formGroup.value.valuePrices),
       key: this.payload.key
       
     }
@@ -328,36 +328,36 @@ export class ProdutosAddPage {
 
   addContinue(url: string){
 
-
     const produto = {
       datetime: this.formGroup.value.datetime,      
       description: this.formGroup.value.description,
       image: url,
       link: "sorteio/index.html",
-      numberMax: this.formGroup.value.numberMax,
-      numberMin: this.formGroup.value.numberMin,
-      qtdNCota: this.formGroup.value.qtdNCota,
+      numberMax: Number(this.formGroup.value.numberMax),
+      numberMin: Number(this.formGroup.value.numberMin),
+      qtdNCota: Number(this.formGroup.value.qtdNCota),
       rules: this.formGroup.value.rules,
       title: this.formGroup.value.title,
-      totalNumbers: this.formGroup.value.numberMax - this.formGroup.value.numberMin + 1,
-      
+      totalNumbers: Number(this.formGroup.value.numberMax) - Number(this.formGroup.value.numberMin + 1),      
       datetimeUpdated: moment().format(),
-      valuePrices: this.formGroup.value.valuePrices,
+      valuePrices: String(this.formGroup.value.valuePrices),
       promocoes: this.formGroup.value.promocoes,
       type: this.dataInfo.appType 
     }
 
     console.log('Adicionando ', produto)
 
-    this.db.adicionaProduto(produto)
-      .then( () => {
-        this.uiUtils.showAlert(this.dataText.success, this.dataText.addedSuccess).present()
+    const key = this.db.adicionaProduto(produto)
 
-        
-        this.navCtrl.popToRoot()
-        this.navCtrl.push('ProdutosPage')
+    this.db.atualizaProduto({key: key})
+    .then( () => {
+      this.uiUtils.showAlert(this.dataText.success, this.dataText.addedSuccess).present()        
+      this.navCtrl.popToRoot()
+      this.navCtrl.push('ProdutosPage')
+    })
+    
+    
 
-      })
 
   }
 

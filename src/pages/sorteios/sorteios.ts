@@ -56,7 +56,26 @@ export class SorteiosPage {
     this.usersWorkers = this.db.getProdutos();
     const sub = this.usersWorkers.subscribe(data => {
       sub.unsubscribe();
-      this.processUserData(data);
+
+      this.db.getSorteios().subscribe((sorteios: any) => {
+        this.processUserData(data);
+
+        this.usersArray.forEach(element => {
+
+          const sorteio = sorteios.find(s => s.payload.val().productKey === element.key);
+          if (sorteio) {            
+            element.sorteio = sorteio.payload.val();
+
+            if(element.sorteio.time){
+              element.sorteio.time = moment(element.sorteio.datetime).format("DD/MM/YYYY hh:mm:ss");
+            }
+            
+          }
+        });
+
+      });
+
+      
       loading.dismiss();
     });
   }
@@ -75,6 +94,7 @@ export class SorteiosPage {
       
     });
     this.checkOrder();
+    
   }
 
   
@@ -163,11 +183,27 @@ export class SorteiosPage {
     this.usersArray = tmp
   }
 
+
+  repetirSorteio(payload_){
+    
+    let alert = this.uiUtils.showConfirm(this.dataText.warning, 'Deseja realizar novo sorteio para esse produto?')  
+    alert.then((result) => {
+
+      if(result){
+
+        payload_.winner = null;
+        payload_.status = 'pendente';
+
+        
+        this.realizarSorteioContinue(payload_)
+      }    
+    })       
+
+}
+
   
   realizarSorteio(payload_){
-
     
-      
       let alert = this.uiUtils.showConfirm(this.dataText.warning, 'Deseja realizar o sorteio para esse produto?')  
       alert.then((result) => {
   
@@ -180,12 +216,13 @@ export class SorteiosPage {
 
   async realizarSorteioContinue(payload_) {
 
+
     console.log('Realizando sorteio para o produto:', payload_);
 
     const key = this.db.adicionaSorteio(payload_.key);
     console.log('Sorteio adicionado com sucesso. Key:', key);
 
-    let loading = this.uiUtils.showLoading('Sorteando números....');
+    let loading = this.uiUtils.showLoading('Sorteando números. Favor aguarde!');
     await loading.present();
         
 
@@ -196,29 +233,27 @@ export class SorteiosPage {
 
       this.db.getSorteioKey(key).subscribe((sorteio) => {
 
-
-        console.log('Sorteio:', sorteio);
-        console.log('Sorteio 1 ', sorteio[0].payload.val())
-
         if (sorteio.length > 0){
           loading.dismiss();
          
           let info = sorteio[0].payload.val()
-          console.log('info', info)
 
-          this.animateNumbers(info);
+          // this.animateNumbers(info);
+
+
+          this.reload()
         } else {
           
-          this.uiUtils.showToast('Sorteio ainda não finalizado. Tentando novamente em 10 segundos...');
+          this.uiUtils.showToast('Realizando sortei, favor aguarde..');
 
           console.log('Sorteio ainda não finalizado. Tentando novamente em 10 segundos...');
 
-          setTimeout(checkSorteio, 10000);
+          setTimeout(checkSorteio, 60000);
         }
       });
     };
 
-    setTimeout(checkSorteio, 10000);
+    setTimeout(checkSorteio, 60000);
   }
 
   

@@ -43,7 +43,12 @@ def perform_sorteio(firebase_db, productKey, sorteioKey):
             cotas = sale['cotas'].split(', ')
             all_numbers.extend(cotas)
             
-        
+    print('productKey', productKey)
+
+    if not all_numbers:
+        print("Nenhum número encontrado.")
+        firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': 'Nenhum número encontrado.', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
+        return
 
     # Convert numbers to integers
     all_numbers = list(map(int, all_numbers))
@@ -59,14 +64,16 @@ def perform_sorteio(firebase_db, productKey, sorteioKey):
     # Find the winner's CPF
     for sale in sales.values():
                                    
-        if 'status' in sale:
+        if 'status' in sale and sale['status'] == 'Finalizado':
             print('Ignoring sale with status:', sale['status'])
             continue
     
         if sale['productKey'] != productKey:
+            print('Ignoring sale with productKey:', sale['productKey'])
             continue
         
         if 'cotas' not in sale:
+            print('Ignoring sale without cotas:', sale)
             continue
         
         
@@ -90,10 +97,8 @@ def perform_sorteio(firebase_db, productKey, sorteioKey):
         firebase_db.write_data('sorteios_logs/'+sorteioKey, {'msg': 'Vencedor encontrado!', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
 
     # Check how many shares of this product the user has purchased
-    user_cotas = cotas.count(winner_number)
+    user_cotas = cotas.__len__()
 
-    # Calculate the number of shares the user has
-    user_cotas = quantidade_numeros_cotas * cotas.count(winner_number)
 
     print(f"O número vencedor é {winner_number}, ganhador: {winner_name} pertencente ao CPF {winner_cpf}.")
     print(f"O usuário comprou {user_cotas} cotas desse produto.")
@@ -156,7 +161,8 @@ def main():
                 # firebase_db.update_data(f'sorteios/{key}', {'status': 'Em andamento'})
                 firebase_db.write_data('sorteios_logs/'+key, {'msg': 'Sorteio iniciado', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S")})
                 
-                winner = perform_sorteio(firebase_db, sorteio.get('productKey'), key)      
+                winner = perform_sorteio(firebase_db, sorteio.get('productKey'), key)  
+                print("Sorteio finalizado.", key, winner)    
                                 
                 firebase_db.update_data('sorteios/'+key, {'msg': 'Sorteio finalizado', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'status': 'Finalizado', 'winner': winner})
                 firebase_db.write_data('sorteios_logs/'+key, {'msg': 'Sorteio finalizado', 'datetime': datetime.now().strftime("%Y-%m-%d %H:%M:%S"), 'winner': winner})

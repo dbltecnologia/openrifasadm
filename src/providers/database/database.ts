@@ -150,7 +150,7 @@ export class DatabaseProvider {
 
     adicionaProduto(produto){
       const path = `/cards/`;
-      return this.db.list(path).push(produto)
+      return this.db.list(path).push(produto).key
     }
 
 
@@ -193,6 +193,13 @@ export class DatabaseProvider {
 
 
         .snapshotChanges()   
+    }
+
+    getSorteios(){
+      const path = `/sorteios/`;
+      return this.db.list(path, 
+        ref => ref.orderByKey())
+        .snapshotChanges()     
     }
 
   }

@@ -31,35 +31,36 @@
           </ion-item>                  
 
           <ion-item no-lines  *ngIf="worker.status && worker.winner">            
-            <ion-label style="color: green;">Status: {{worker.status}}</ion-label>            
+            <ion-label style="color: green;">Data do sorteio: {{worker.winner.time}} - Status: {{worker.status}}</ion-label>                   
           </ion-item>        
-
-          <ion-item no-lines  *ngIf="worker.status && worker.winner">                        
-            <ion-label>Horário sorteio: {{worker.winner.time | date:'dd/MM/yyyy HH:mm'}}</ion-label>                 
-          </ion-item>        
-
 
           <ion-card no-lines *ngIf="worker.status && worker.winner" style="border: 1px solid green; border-radius: 5px;">
             <ion-card-header>
-              <ion-card-title>Vencedor: {{worker.winner.name}}</ion-card-title>
+              <ion-card-title>Último Vencedor: {{worker.winner.name}}</ion-card-title>
             </ion-card-header>
             <ion-card-content>
               <ion-label>CPF {{worker.winner.cpf}}</ion-label>
               <ion-label>Cotas: {{worker.winner.winner_cotas}}</ion-label>
               <ion-label>Número Vencedor: {{worker.winner.winner_number}}</ion-label>
+              
             </ion-card-content>
-          </ion-card>
-          
+          </ion-card>          
           
         </ion-list>
 
       </ion-card-content>
             
-      <ion-row padding>              
-        <ion-col>
+      <ion-row >              
+        <ion-col padding *ngIf="worker && worker.status !== 'Finalizado'">
           <button ion-button icon-start clear small (click)="realizarSorteio(worker)">
             <ion-icon name="md-clipboard" color="primary"></ion-icon>
-            <div>Realizar sorteios</div>
+            <div>Realizar sorteio</div>
+          </button>
+        </ion-col>
+        <ion-col padding *ngIf="worker && worker.status === 'Finalizado'">
+          <button ion-button icon-start clear small (click)="repetirSorteio(worker)">
+            <ion-icon name="md-clipboard" color="primary"></ion-icon>
+            <div>Novo sorteio</div>
           </button>
         </ion-col>
       </ion-row>

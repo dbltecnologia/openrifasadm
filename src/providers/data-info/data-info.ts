@@ -4,9 +4,7 @@ import * as moment from 'moment-timezone';
 
 @Injectable()
 export class DataInfoProvider {  
-
   
-
   appName: string = "Bingo Fácil Admin"
   appType: number = 1    // 0 - Rifa 1 - Bingo
 
