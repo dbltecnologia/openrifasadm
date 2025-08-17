@@ -1,2 +1,2 @@
-# openRifasAdmin
-openRifasAdmin
+# Open Rifas Adm
+Aplicativo para rifas - Educacional
